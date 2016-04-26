@@ -1,0 +1,12 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: tnapp_development
+
+test:
+  <<: *default
+  database: tnapp_test
