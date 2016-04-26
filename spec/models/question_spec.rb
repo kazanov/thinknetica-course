@@ -6,7 +6,11 @@ RSpec.describe Question, type: :model do
 
   it { should validate_length_of(:title).is_at_most(140) }
 
+<<<<<<< HEAD
   it { should have_many(:answers).dependent(:destroy) }
+=======
+  it { should have_many :answers }
+>>>>>>> 62eb033b7ab98121a634f18a63c175b08b260bcb
 
   it { should have_db_index :question_id }
 end
