@@ -10,7 +10,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-group :development, :test do
+group :test, :development do
+  gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'
   gem 'pry'
   gem 'spring'
@@ -28,7 +29,6 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'capybara'
 end
