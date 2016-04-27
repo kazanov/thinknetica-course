@@ -1,0 +1,12 @@
+%h2 #{@question.title}
+%p #{@question.body}
+%hr
+- if @question.answers.present?
+  %h3 Answers:
+  %ul
+  - @question.answers.each do |answer|
+    %li #{answer.body}
+- else
+  %h3 No answers yet.
+= link_to 'Add answer', new_question_answer_path(@question)
+= link_to 'Back to questions list', root_path
