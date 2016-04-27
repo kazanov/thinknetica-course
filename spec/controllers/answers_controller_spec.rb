@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
@@ -26,11 +25,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-
     context 'with valid attributes' do
-       let(:post_create) do
-         post :create, question_id: question.id, answer: attributes_for(:answer)
-       end
+      let(:post_create) do
+        post :create, question_id: question.id, answer: attributes_for(:answer)
+      end
 
       it 'saves new answer of a question in db' do
         expect { post_create }.to change(Answer, :count).by(1)
@@ -61,7 +59,5 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :new
       end
     end
-
   end
-
 end

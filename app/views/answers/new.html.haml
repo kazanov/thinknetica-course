@@ -1,0 +1,4 @@
+%h2 Add answer
+= simple_form_for [@question, @answer] do |f|
+  = f.text_area :body
+  = f.button :submit, 'Add answer'
