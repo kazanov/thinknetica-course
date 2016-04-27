@@ -3,15 +3,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
 
-  # describe 'GET #index' do
-  #   let(:answers) { create_list(:answer, 2, question: question) }
-  #   before { get :index, question_id: question }
-  #
-  #   it 'populates an array of all answers' do
-  #     expect(assigns(:answers)).to match_array(answers)
-  #   end
-  # end
-
   describe 'GET #new' do
     before { get :new, question_id: question }
 
