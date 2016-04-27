@@ -1,0 +1,7 @@
+%h1 ThinkneticaCourseApp
+- if @questions.present?
+  - @questions.each do |question|
+    %h3 question.title
+- else
+  %h2 No questions yet.
+= link_to 'Add new question', new_question_path
