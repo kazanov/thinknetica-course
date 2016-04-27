@@ -21,10 +21,6 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question.id, answer: attributes_for(:answer)
       end
 
-      it 'saves new answer of a question in db' do
-        expect { post_create }.to change(Answer, :count).by(1)
-      end
-
       it 'increase the answers count of question' do
         expect { post_create }.to change(question.answers, :count).by(1)
       end
@@ -43,10 +39,6 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid answer' do
       let(:post_create) do
         post :create, question_id: question.id, answer: attributes_for(:invalid_answer)
-      end
-
-      it 'does not save new answer of a question in db' do
-        expect { post_create }.to_not change(Answer, :count)
       end
 
       it 'does not change the answers count of question' do
