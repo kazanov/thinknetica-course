@@ -8,6 +8,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'simple_form'
+gem 'devise'
 
 gem 'haml-rails'
 
