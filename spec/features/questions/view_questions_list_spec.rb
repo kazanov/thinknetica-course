@@ -4,6 +4,7 @@ feature 'User is able to view questions list', %q{
   As an user
   I want to be able to view questions list
 } do
+  given(:user) { create(:user) }
   given(:question) { create(:question) }
 
   scenario 'User try to view questions list' do

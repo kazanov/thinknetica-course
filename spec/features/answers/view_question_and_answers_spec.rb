@@ -4,6 +4,7 @@ feature 'User is able to view question and answers', %q{
   As an user
   I want to be able to view question and answers
 } do
+  given(:user) { create(:user) }
   given(:question) { create(:question) }
   given(:answer) { create(:answer, question: question) }
 

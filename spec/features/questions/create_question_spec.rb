@@ -16,6 +16,7 @@ feature 'User is able to create question', %q{
       click_on 'Add new question'
       fill_in 'question[title]', with: question.title
       fill_in 'question[body]', with: question.body
+
       click_on 'Create question'
 
       expect(page).to have_content question.title

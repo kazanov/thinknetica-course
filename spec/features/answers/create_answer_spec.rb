@@ -6,7 +6,6 @@ feature 'User is able to create answer', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { build(:answer) }
 
   context 'Authenticated user' do
     before do
@@ -16,10 +15,10 @@ feature 'User is able to create answer', %q{
 
     scenario 'Try to create answer with valid parameters' do
       click_on 'Answer this question'
-      fill_in 'answer[body]', with: answer.body
+      fill_in 'answer[body]', with: 'Sample answer'
       click_on 'Add answer'
 
-      expect(page).to have_content answer.body
+      expect(page).to have_content 'Sample answer'
     end
 
     scenario 'Try to create answer with invalid parameters' do
