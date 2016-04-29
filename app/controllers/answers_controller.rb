@@ -1,5 +1,7 @@
 class AnswersController < ApplicationController
   before_action :find_question, only: [:new, :create]
+  before_action :authenticate_user!
+
   def new
     @answer = @question.answers.new
   end

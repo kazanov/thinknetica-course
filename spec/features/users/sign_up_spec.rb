@@ -1,11 +1,9 @@
 require 'rails_helper'
-
 feature 'User sign up', %q{
   In order to ask question
   As a user
   I want to be able to sign up
 } do
-
   given(:user) { create(:user) }
   given(:new_user) { build(:user) }
 
@@ -28,6 +26,4 @@ feature 'User sign up', %q{
 
     expect(page).to have_content 'has already been taken'
   end
-
-
 end

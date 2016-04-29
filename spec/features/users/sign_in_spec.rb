@@ -1,11 +1,9 @@
 require 'rails_helper'
-
 feature 'User sign in', %q{
   In order to ask question
   As a user
   I want to be able to sign in
 } do
-
   given(:user) { create(:user) }
 
   scenario 'Registered user try to sign in' do
