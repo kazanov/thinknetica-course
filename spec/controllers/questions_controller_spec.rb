@@ -18,17 +18,30 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    before do
-      sign_in user
-      get :new
-    end
+    context 'authenticated user' do
+      before do
+        sign_in user
+        get :new
+      end
 
-    it 'assigns a new Question to @question' do
-      expect(assigns(:question)).to be_a_new Question
-    end
+      it 'assigns a new Question to @question' do
+        expect(assigns(:question)).to be_a_new Question
+      end
 
-    it 'renders new view' do
-      expect(response).to render_template :new
+      it 'renders new view' do
+        expect(response).to render_template :new
+      end
+    end
+    context 'non-authenticated user' do
+      before { get :new }
+
+      it 'assigns a new Question to @question' do
+        expect(assigns(:question)).to_not be_a_new Question
+      end
+
+      it 'renders new view' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
@@ -92,6 +105,35 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'renders show view' do
       expect(response).to render_template :show
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'question owner' do
+      before { sign_in question.user }
+      it 'is able to delete his own question' do
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+
+      it 'deletes all question answers' do
+        create(:answer, question: question)
+        expect { delete :destroy, id: question }.to change(Answer, :count)
+      end
+
+      it 'redirects to root path' do
+        question
+        delete :destroy, id: question
+
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'not question owner' do
+      before { sign_in user }
+      let(:question) { create(:question) }
+      it 'is not able to delete another user question' do
+        expect { delete :destroy, id: question }.to_not change(Question, :count)
+      end
     end
   end
 end

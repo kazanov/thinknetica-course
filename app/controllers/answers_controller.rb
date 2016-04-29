@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
-  before_action :find_question, only: [:new, :create]
   before_action :authenticate_user!
+  before_action :find_question, only: [:new, :create, :destroy]
+  before_action :find_answer, only: [:destroy]
 
   def new
     @answer = @question.answers.new
@@ -8,6 +9,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
     if @answer.save
       redirect_to @question
     else
@@ -15,7 +17,16 @@ class AnswersController < ApplicationController
     end
   end
 
+  def destroy
+    @answer.destroy
+    redirect_to @question
+  end
+
   private
+
+  def find_answer
+    @answer = @question.answers.find(params[:id])
+  end
 
   def find_question
     @question = Question.find(params[:question_id])

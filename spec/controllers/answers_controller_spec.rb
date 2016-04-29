@@ -57,4 +57,36 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'authenticated answer owner' do
+      before { sign_in answer.user }
+      it 'is able to delete his own answer' do
+        expect { delete :destroy, question_id: answer.question, id: answer }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question path' do
+        answer
+        delete :destroy, question_id: answer.question, id: answer
+        expect(response).to redirect_to answer.question
+      end
+    end
+
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user
+        answer
+      end
+      it 'is not able to delete another user answer' do
+        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(question.answers, :count)
+      end
+    end
+
+    context 'non-authenticated user' do
+      it 'is not able to delete answers' do
+        answer
+        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
+      end
+    end
+  end
 end
