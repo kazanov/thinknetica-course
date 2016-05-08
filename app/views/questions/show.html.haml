@@ -6,13 +6,23 @@
   %h3 Answers:
   %ul
   - @question.answers.each do |answer|
-    %li #{answer.body}
-    - if current_user && current_user.author_of?(answer)
-      = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete
+    - if answer.valid?
+      %li #{answer.body}
+      - if current_user && current_user.author_of?(answer)
+        = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete
 - else
   %h3 No answers yet.
+
+%h2 Add Answer
+- if @answer && @answer.errors.any?
+  %h2 Some errors:
+  %ul
+  - @answer.errors.full_messages.each do |error|
+    %li= error
+= simple_form_for [@question, @question.answers.build] do |f|
+  = f.text_area :body, label: false, placeholder: "Answer", input_html: { class: "form-control", required: true }
+  = f.button :submit, 'Add answer'
 %hr
-= link_to 'Answer this question', new_question_answer_path(@question)
 = link_to 'Back to questions list', root_path
 - if current_user && current_user.author_of?(@question)
-  = link_to 'Delete question', question_path, method: :delete
+  = link_to 'Delete question', question_path(@question), method: :delete

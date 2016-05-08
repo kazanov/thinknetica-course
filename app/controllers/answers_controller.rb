@@ -3,18 +3,13 @@ class AnswersController < ApplicationController
   before_action :find_question, only: [:new, :create, :destroy]
   before_action :find_answer, only: [:destroy]
 
-  def new
-    @answer = @question.answers.new
-  end
-
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     if @answer.save
-      redirect_to @question
-      flash[:notice] = 'Answer successfully created.'
+      redirect_to @question, notice: 'Answer successfully created.'
     else
-      render :new
+      render 'questions/show'
     end
   end
 

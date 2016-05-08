@@ -1,0 +1,8 @@
+= simple_form_for [@question, @question.answers.build] do |f|
+  - if answer.errors.any?
+    %h2 Some errors:
+    %ul
+    - answer.errors.full_messages.each do |error|
+      %li= error
+  = f.text_area :body, required: true
+  = f.button :submit, 'Add answer'

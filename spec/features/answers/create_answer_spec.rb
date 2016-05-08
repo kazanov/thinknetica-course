@@ -14,7 +14,6 @@ feature 'User is able to create answer', %q{
     end
 
     scenario 'Try to create answer with valid parameters' do
-      click_on 'Answer this question'
       fill_in 'answer[body]', with: 'Sample answer'
       click_on 'Add answer'
 
@@ -22,7 +21,6 @@ feature 'User is able to create answer', %q{
     end
 
     scenario 'Try to create answer with invalid parameters' do
-      click_on 'Answer this question'
       click_on 'Add answer'
 
       expect(page).to have_content "Body can't be blank"
@@ -31,7 +29,7 @@ feature 'User is able to create answer', %q{
 
   scenario 'Non-authenticated user try to create answer' do
     visit question_path question
-    click_on 'Answer this question'
+    click_on 'Add answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end

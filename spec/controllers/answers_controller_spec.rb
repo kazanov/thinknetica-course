@@ -4,21 +4,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
 
-  describe 'GET #new' do
-    before do
-      sign_in user
-      get :new, question_id: question
-    end
-
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new Answer
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     context 'with valid attributes' do
       before { sign_in user }
@@ -58,7 +43,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders new view' do
         post_create
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end
@@ -83,7 +68,7 @@ RSpec.describe AnswersController, type: :controller do
         answer
       end
       it 'is not able to delete another user answer' do
-        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(question.answers, :count)
+        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
       end
     end
 
