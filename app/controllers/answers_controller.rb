@@ -12,13 +12,19 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     if @answer.save
       redirect_to @question
+      flash[:notice] = 'Answer successfully created.'
     else
       render :new
     end
   end
 
   def destroy
-    @answer.destroy
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      flash[:notice] = 'Answer successfully deleted.'
+    else
+      flash[:notice] = 'You are not allowed to delete this question.'
+    end
     redirect_to @question
   end
 

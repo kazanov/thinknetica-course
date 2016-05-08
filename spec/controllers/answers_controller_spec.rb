@@ -39,6 +39,11 @@ RSpec.describe AnswersController, type: :controller do
         post_create
         expect(assigns(:answer).question).to match question
       end
+
+      it 'connects user and answer' do
+        post_create
+        expect(assigns(:answer).user_id).to match user.id
+      end
     end
 
     context 'with invalid answer' do

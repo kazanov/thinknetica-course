@@ -18,14 +18,21 @@ class QuestionsController < ApplicationController
 
     if @question.save
       redirect_to @question
+      flash[:notice] = 'Question successfully created.'
     else
       render :new
     end
   end
 
   def destroy
-    @question.destroy
-    redirect_to root_path
+    if current_user.author_of?(@question)
+      @question.destroy
+      redirect_to root_path
+      flash[:notice] = 'Question successfully deleted.'
+    else
+      redirect_to @question
+      flash[:alert] = 'You are not allowed to delete this question.'
+    end
   end
 
   private

@@ -6,7 +6,7 @@ feature 'User is able to view question and answers', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question) }
+  given(:answer) { create_list(:answer, 5, question: question) }
 
   scenario 'User try to view question and answers' do
     question
@@ -16,6 +16,8 @@ feature 'User is able to view question and answers', %q{
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
-    expect(page).to have_content question.answers.first.body
+    question.answers.each do |answer|
+      expect(page).to have_content answer.body
+    end
   end
 end

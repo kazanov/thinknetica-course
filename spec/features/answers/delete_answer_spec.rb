@@ -10,8 +10,9 @@ feature 'User is able to delete answer', %q{
   scenario 'Is able to delete his own answer' do
     sign_in(answer.user)
     visit question_path(answer.question)
+    click_on 'Delete answer'
 
-    expect(page).to have_content 'Delete answer'
+    expect(page).to_not have_content answer.body
   end
 
   scenario 'Not able to delete another user answer' do

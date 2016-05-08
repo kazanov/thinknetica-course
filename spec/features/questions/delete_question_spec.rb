@@ -10,8 +10,9 @@ feature 'User is able to delete question', %q{
   scenario 'Is able to delete his own question' do
     sign_in(question.user)
     visit question_path(question)
+    click_on 'Delete question'
 
-    expect(page).to have_content 'Delete question'
+    expect(page).to_not have_content question.title
   end
 
   scenario 'Not able to delete another user question' do

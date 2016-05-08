@@ -1,6 +1,7 @@
 require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let(:user2) { create(:user) }
   let(:question) { create(:question) }
 
   describe 'GET #index' do
@@ -56,6 +57,11 @@ RSpec.describe QuestionsController, type: :controller do
         it 'redirects to show view' do
           post :create, question: attributes_for(:question)
           expect(response).to redirect_to question_path(assigns(:question))
+        end
+
+        it 'connects user and question' do
+          post :create, question: attributes_for(:question)
+          expect(assigns(:question).user_id).to match user.id
         end
       end
 
@@ -115,11 +121,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
       end
 
-      it 'deletes all question answers' do
-        create(:answer, question: question)
-        expect { delete :destroy, id: question }.to change(Answer, :count)
-      end
-
       it 'redirects to root path' do
         question
         delete :destroy, id: question
@@ -130,8 +131,8 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'not question owner' do
       before { sign_in user }
-      let(:question) { create(:question) }
       it 'is not able to delete another user question' do
+        question
         expect { delete :destroy, id: question }.to_not change(Question, :count)
       end
     end
