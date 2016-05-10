@@ -30,3 +30,12 @@ Metrics/LineLength:
 
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
+
+Style/UnneededPercentQ:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false

@@ -1,22 +1,12 @@
 require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
+  let(:user) { create(:user) }
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
 
-  describe 'GET #new' do
-    before { get :new, question_id: question }
-
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new Answer
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     context 'with valid attributes' do
+      before { sign_in user }
       let(:post_create) do
         post :create, question_id: question.id, answer: attributes_for(:answer)
       end
@@ -34,9 +24,15 @@ RSpec.describe AnswersController, type: :controller do
         post_create
         expect(assigns(:answer).question).to match question
       end
+
+      it 'connects user and answer' do
+        post_create
+        expect(assigns(:answer).user_id).to match user.id
+      end
     end
 
     context 'with invalid answer' do
+      before { sign_in user }
       let(:post_create) do
         post :create, question_id: question.id, answer: attributes_for(:invalid_answer)
       end
@@ -47,7 +43,39 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders new view' do
         post_create
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'authenticated answer owner' do
+      before { sign_in answer.user }
+      it 'is able to delete his own answer' do
+        expect { delete :destroy, question_id: answer.question, id: answer }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question path' do
+        answer
+        delete :destroy, question_id: answer.question, id: answer
+        expect(response).to redirect_to answer.question
+      end
+    end
+
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user
+        answer
+      end
+      it 'is not able to delete another user answer' do
+        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
+      end
+    end
+
+    context 'non-authenticated user' do
+      it 'is not able to delete answers' do
+        answer
+        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
       end
     end
   end
