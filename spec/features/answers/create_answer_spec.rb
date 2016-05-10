@@ -5,7 +5,7 @@ feature 'User is able to create answer', %q{
   I want to be able to create answer
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:question) { create(:question) }
 
   context 'Authenticated user' do
     before do
@@ -13,17 +13,21 @@ feature 'User is able to create answer', %q{
       visit question_path question
     end
 
-    scenario 'Try to create answer with valid parameters' do
+    scenario 'Try to create answer with valid parameters', js: true do
       fill_in 'answer[body]', with: 'Sample answer'
       click_on 'Add answer'
 
-      expect(page).to have_content 'Sample answer'
+      expect(current_path).to eq question_path(question)
+      within 'div#answers' do
+        expect(page).to have_content 'Sample answer'
+      end
+      find_field('answer[body]').value == ''
     end
 
-    scenario 'Try to create answer with invalid parameters' do
+    scenario 'Try to create answer with invalid parameters', js: true do
       click_on 'Add answer'
 
-      expect(page).to have_content "Body can't be blank"
+      expect(page).to_not have_content 'Answer successfully created.'
     end
   end
 

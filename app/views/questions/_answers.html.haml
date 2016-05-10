@@ -1,0 +1,8 @@
+%h3 Answers:
+%ul
+  - if @question.answers.present?
+    - @question.answers.each do |answer|
+      - if answer.valid?
+        = render 'answer', answer: answer
+  - else
+    %h3 No answers yet.
