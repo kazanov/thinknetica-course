@@ -21,7 +21,6 @@ feature 'User is able to create answer', %q{
       within 'div#answers' do
         expect(page).to have_content 'Sample answer'
       end
-      find_field('answer[body]').value == ''
     end
 
     scenario 'Try to create answer with invalid parameters', js: true do
