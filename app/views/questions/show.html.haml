@@ -1,9 +1,11 @@
 %h2 #{@question.title}
-%p Author: #{@question.user_id}
+%p Author: #{current_user.email}
 %p #{@question.body}
 %hr
+%h3 Answers:
 #answers
-  = render 'answers', question: @question
+  %ul
+    = render @question.answers
 
 %h2 Add Answer
 - if @answer && @answer.errors.any?
