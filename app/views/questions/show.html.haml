@@ -1,5 +1,5 @@
 %h2 #{@question.title}
-%p Author: #{current_user.email}
+%p Author: #{User.find_by(id: @question.user_id).email}
 %p #{@question.body}
 %hr
 %h3 Answers:
