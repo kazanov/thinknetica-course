@@ -26,7 +26,7 @@ feature 'User is able to create answer', %q{
     scenario 'Try to create answer with invalid parameters', js: true do
       click_on 'Add answer'
 
-      expect(page).to have_content "Body can't be blank."
+      expect(page).to have_content "Body can't be blank"
     end
   end
 
