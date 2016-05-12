@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper'
 feature 'User is able to view questions list', %q{
   In order to get solution
   As an user

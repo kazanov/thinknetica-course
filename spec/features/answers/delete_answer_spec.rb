@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper'
 feature 'User is able to delete answer', %q{
   In order to fix error answer
   As an user

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper'
 feature 'User is able to create question', %q{
   In order to get solution
   As an authenticated user

@@ -24,7 +24,7 @@ group :test, :development do
   gem 'quiet_assets'
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'factory_girl_rails'
-  gem 'selenium-webdriver'
+  gem 'capybara-webkit'
 end
 
 group :development do
