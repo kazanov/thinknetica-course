@@ -8,16 +8,16 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       before { sign_in user }
       let(:post_create) do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
+        post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
       end
 
       it 'increase the answers count of question' do
         expect { post_create }.to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to show view' do
+      it 'render create template' do
         post_create
-        expect(response).to redirect_to question_path(assigns(:question))
+        expect(response).to render_template 'create'
       end
 
       it 'check the question of an answer' do
@@ -34,16 +34,16 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid answer' do
       before { sign_in user }
       let(:post_create) do
-        post :create, question_id: question.id, answer: attributes_for(:invalid_answer)
+        post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js
       end
 
       it 'does not save the answer' do
         expect { post_create }.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
+      it 'render create template' do
         post_create
-        expect(response).to render_template 'questions/show'
+        expect(response).to render_template 'create'
       end
     end
   end
