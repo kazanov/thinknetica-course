@@ -20,7 +20,6 @@ class AnswersController < ApplicationController
     else
       flash[:notice] = 'You are not allowed to delete this question.'
     end
-    redirect_to @question
   end
 
   private

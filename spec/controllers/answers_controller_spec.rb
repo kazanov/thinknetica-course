@@ -78,13 +78,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'authenticated answer owner' do
       before { sign_in answer.user }
       it 'is able to delete his own answer' do
-        expect { delete :destroy, question_id: answer.question, id: answer }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question path' do
         answer
-        delete :destroy, question_id: answer.question, id: answer
-        expect(response).to redirect_to answer.question
+        delete :destroy, question_id: answer.question, id: answer, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -94,14 +94,14 @@ RSpec.describe AnswersController, type: :controller do
         answer
       end
       it 'is not able to delete another user answer' do
-        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
+        expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to_not change(Answer, :count)
       end
     end
 
     context 'non-authenticated user' do
       it 'is not able to delete answers' do
         answer
-        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
+        expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to_not change(Answer, :count)
       end
     end
   end

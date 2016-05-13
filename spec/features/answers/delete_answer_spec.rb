@@ -7,7 +7,7 @@ feature 'User is able to delete answer', %q{
   given(:user) { create(:user) }
   given(:answer) { create(:answer) }
 
-  scenario 'Is able to delete his own answer' do
+  scenario 'Is able to delete his own answer', js: true do
     sign_in(answer.user)
     visit question_path(answer.question)
     click_on 'Delete answer'
