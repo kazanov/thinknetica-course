@@ -1,19 +1,12 @@
 %h2 #{@question.title}
-%p Author: #{User.find_by(id: @question.user_id).email}
+%p Author: #{@question.user.email}
 %p #{@question.body}
 %hr
 %h3 Answers:
 #answers
-  %ul
-    = render @question.answers
+  = render @question.answers
 
 %h2 Add Answer
-- if @answer && @answer.errors.any?
-  %h2 Some errors:
-  %ul
-    - @answer.errors.full_messages.each do |error|
-      %li= error
-
 = render partial: 'answers/form', locals: { question: @question, answer: @answer }
 
 %hr

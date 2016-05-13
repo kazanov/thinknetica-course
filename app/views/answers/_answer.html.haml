@@ -1,4 +1,8 @@
 - if answer.persisted?
-  %li #{answer.body}
-  - if current_user && current_user.author_of?(answer)
-    = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete
+  %div{id: "answer-#{answer.id}"}
+    %p Author: #{answer.user.email}
+    %p #{answer.body}
+    - if current_user && current_user.author_of?(answer)
+      = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete
+      = render partial: 'answers/form', locals: { question: @question, answer: answer }

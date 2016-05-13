@@ -3,6 +3,5 @@
     $('.answer-errors').append('<%= j message %>')
   <% end %>
 <% else %>
-  $('#answers').append('<%= j render @answer %>');
-  $('#answer_body').val('');
+  $('div#answer-<%= @answer.id %>').replaceWith('<%= j render @answer %>');
 <% end %>
