@@ -21,10 +21,10 @@ RSpec.describe Answer, type: :model do
 
     it 'should be only one best answer' do
       answer1.make_best!
-      expect(answer1.best).to be true
+      expect(answer1).to be_best
 
       answer2.reload
-      expect(answer2.best).to be false
+      expect(answer2).to_not be_best
     end
   end
 end
