@@ -1,7 +1,7 @@
 require_relative '../features_helper'
 feature 'User is able to edit answer', %q{
   In order to fix mistake
-  As an author of question
+  As an author of answer
   I want to edit my answer
 } do
   given(:user) { create(:user) }
@@ -10,19 +10,21 @@ feature 'User is able to edit answer', %q{
   given(:user2) { create(:user) }
   given!(:answer2) { create(:answer, question: question, user: user2) }
 
-  scenario 'Non-authenticated user try to edit answer' do
-    visit question_path(question)
+  context 'Non-authenticated user' do
+    scenario 'not able to edit answer' do
+      visit question_path(question)
 
-    expect(page).to_not have_link 'Edit answer'
+      expect(page).to_not have_link 'Edit answer'
+    end
   end
 
-  describe 'Authenticated user' do
+  context 'Authenticated user' do
     before do
       sign_in user
       visit question_path(question)
     end
 
-    scenario 'try to edit his answer with valid parameters', js: true do
+    scenario 'is able edit his answer with valid parameters', js: true do
       within '#answers' do
         click_on 'Edit answer'
         fill_in 'answer[body]', with: 'edited answer'
@@ -34,7 +36,7 @@ feature 'User is able to edit answer', %q{
       end
     end
 
-    scenario 'try to edit his answer with invalid parameters', js: true do
+    scenario 'not able to edit his answer with invalid parameters', js: true do
       within '#answers' do
         click_on 'Edit answer'
         fill_in 'answer[body]', with: ''
@@ -46,7 +48,7 @@ feature 'User is able to edit answer', %q{
       end
     end
 
-    scenario 'try to edit other users answer' do
+    scenario 'not able to edit other users answer' do
       within '#answer-2' do
         expect(page).to have_content answer2.body
         expect(page).to_not have_link 'Edit answer'

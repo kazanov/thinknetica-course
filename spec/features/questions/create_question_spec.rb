@@ -17,14 +17,14 @@ feature 'User is able to create question', %q{
       fill_in 'question[title]', with: question.title
       fill_in 'question[body]', with: question.body
 
-      click_on 'Create question'
+      click_on 'Save'
 
       expect(page).to have_content question.title
     end
 
     scenario 'Try to create question with invalid parameters' do
       click_on 'Add new question'
-      click_on 'Create question'
+      click_on 'Save'
 
       expect(page).to have_content "Title can't be blank"
       expect(page).to have_content "Body can't be blank"

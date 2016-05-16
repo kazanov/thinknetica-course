@@ -16,7 +16,7 @@ feature 'Question author is able to select best answer', %q{
       visit question_path question
     end
 
-    scenario 'Try to select best answer', js: true do
+    scenario 'is able to select best answer', js: true do
       expect(page).to_not have_content 'SOLUTION:'
       within '#answers' do
         within "#answer-#{answer2.id}" do
@@ -27,7 +27,7 @@ feature 'Question author is able to select best answer', %q{
       end
     end
 
-    scenario 'Try to change best answer', js: true do
+    scenario 'is able to select another best answer', js: true do
       within '#answers' do
         within "#answer-#{answer2.id}" do
           click_on 'Solution!'
@@ -58,16 +58,20 @@ feature 'Question author is able to select best answer', %q{
     end
   end
 
-  scenario 'Authenticated not question owner' do
-    sign_in(user2)
-    visit question_path question
+  context 'Authenticated not question owner' do
+    scenario 'not able to select best answer' do
+      sign_in(user2)
+      visit question_path question
 
-    expect(page).to_not have_content 'Solution!'
+      expect(page).to_not have_content 'Solution!'
+    end
   end
 
-  scenario 'Non-authenticated user try to select best answer' do
-    visit question_path question
+  context 'Non-authenticated not question owner' do
+    scenario 'not able to select best answer' do
+      visit question_path question
 
-    expect(page).to_not have_content 'Solution!'
+      expect(page).to_not have_content 'Solution!'
+    end
   end
 end

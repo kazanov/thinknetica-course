@@ -1,6 +1,4 @@
-%h2 #{@question.title}
-%p Author: #{@question.user.email}
-%p #{@question.body}
+= render @question
 %hr
 %h3 Answers:
 #answers
@@ -11,5 +9,3 @@
 
 %hr
 = link_to 'Back to questions list', root_path
-- if current_user && current_user.author_of?(@question)
-  = link_to 'Delete question', question_path(@question), method: :delete

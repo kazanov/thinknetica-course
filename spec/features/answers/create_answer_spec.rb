@@ -30,10 +30,12 @@ feature 'User is able to create answer', %q{
     end
   end
 
-  scenario 'Non-authenticated user try to create answer' do
-    visit question_path question
-    click_on 'Save answer'
+  context 'Non-authenticated user' do
+    scenario 'not able to create answer' do
+      visit question_path question
+      click_on 'Save answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    end
   end
 end
