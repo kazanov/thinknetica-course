@@ -1,7 +1,11 @@
 - if answer.persisted?
   %div{id: "answer-#{answer.id}"}
     %p Author: #{answer.user.email}
+    - if answer.best
+      %p SOLUTION:
     %p #{answer.body}
+    - if current_user && current_user.author_of?(answer.question)
+      = link_to 'Solution!', best_answer_question_answer_path(answer.question, answer), method: :post
     - if current_user && current_user.author_of?(answer)
       = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, remote: true

@@ -4,7 +4,7 @@
 %hr
 %h3 Answers:
 #answers
-  = render @question.answers
+  = render @question.answers.best_first
 
 %h2 Add Answer
 = render partial: 'answers/form', locals: { question: @question, answer: @answer }

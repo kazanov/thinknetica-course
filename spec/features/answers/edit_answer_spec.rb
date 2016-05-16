@@ -52,6 +52,5 @@ feature 'User is able to edit answer', %q{
         expect(page).to_not have_link 'Edit answer'
       end
     end
-
   end
 end

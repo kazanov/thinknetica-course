@@ -1,8 +1,10 @@
 require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let!(:question) { create(:question) }
-  let(:answer) { create(:answer) }
+  let(:user2) { create(:user) }
+  let!(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
+  let!(:answer2) { create(:answer, question: question, user: user2) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -50,7 +52,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     before { sign_in user }
-    let(:answer) { create(:answer, question: question)  }
+    let(:answer) { create(:answer, question: question, user: user) }
 
     it 'assigns the requested answer to @answer' do
       patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
@@ -58,7 +60,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'change answer attributes' do
-      patch :update, id: answer, question_id: question, answer: { body: 'new body' }, format: :js
+      patch :update, id: answer, question_id: question, answer: { body: 'new body' }, user: user, format: :js
       answer.reload
       expect(answer.body).to eq 'new body'
     end
@@ -82,7 +84,6 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'redirects to question path' do
-        answer
         delete :destroy, question_id: answer.question, id: answer, format: :js
         expect(response).to render_template :destroy
       end
@@ -90,8 +91,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'authenticated not answer owner' do
       before do
-        sign_in user
-        answer
+        sign_in user2
       end
       it 'is not able to delete another user answer' do
         expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to_not change(Answer, :count)
@@ -100,8 +100,54 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'non-authenticated user' do
       it 'is not able to delete answers' do
-        answer
         expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to_not change(Answer, :count)
+      end
+    end
+  end
+
+  describe 'POST #best_answer' do
+    context 'authenticated question owner' do
+      before do
+        sign_in user
+      end
+
+      it 'assigns the requested answer to @answer' do
+        post :best_answer, question_id: question.id, id: answer2
+        expect(assigns(:answer)).to eq answer2
+      end
+
+      it 'redirects to question' do
+        post :best_answer, question_id: question.id, id: answer2
+        expect(response).to redirect_to answer2.question
+      end
+
+      it 'is able to select best answer' do
+        expect(answer2.best).to eq false
+        post :best_answer, question_id: question.id, id: answer2
+        answer2.reload
+        expect(answer2.best).to eq true
+      end
+    end
+
+    context 'authenticated not question owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'not able to select best answer' do
+        expect(answer.best).to eq false
+        post :best_answer, question_id: question.id, id: answer
+        answer.reload
+        expect(answer.best).to eq false
+      end
+    end
+
+    context 'non-authenticated user' do
+      it 'not able to select best answer' do
+        expect(answer.best).to eq false
+        post :best_answer, question_id: question.id, id: answer
+        answer.reload
+        expect(answer.best).to eq false
       end
     end
   end

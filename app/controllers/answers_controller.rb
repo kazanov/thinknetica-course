@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:new, :create, :update, :destroy]
-  before_action :find_answer, only: [:update, :destroy]
+  before_action :find_question, only: [:create, :update, :destroy, :best_answer]
+  before_action :find_answer, only: [:update, :destroy, :best_answer]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    current_user.author_of?(@answer) && @answer.update(answer_params)
   end
 
   def destroy
@@ -20,6 +20,11 @@ class AnswersController < ApplicationController
     else
       flash[:notice] = 'You are not allowed to delete this question.'
     end
+  end
+
+  def best_answer
+    current_user.author_of?(@answer.question) && @answer.make_best!
+    redirect_to @answer.question
   end
 
   private
