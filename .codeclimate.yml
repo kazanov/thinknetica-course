@@ -1,0 +1,9 @@
+engines:
+  # ... CONFIG CONTENT ...
+  brakeman:
+    enabled: true
+    # ... CONFIG CONTENT ...
+    checks:
+      dynamic_render_path:
+        enabled: false
+# ... CONFIG CONTENT ...

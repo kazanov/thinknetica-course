@@ -51,28 +51,55 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { sign_in user }
-    let(:answer) { create(:answer, question: question, user: user) }
+    context 'authenticated answer owner' do
+      before { sign_in user }
+      let(:answer) { create(:answer, question: question, user: user) }
 
-    it 'assigns the requested answer to @answer' do
-      patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
-      expect(assigns(:answer)).to eq answer
+      it 'assigns the requested answer to @answer' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'change answer attributes' do
+        patch :update, id: answer, question_id: question, answer: { body: 'new body' }, user: user, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'assigns answer to question' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(assigns(:question)).to match question
+      end
+
+      it 'render update template' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(response).to render_template :update
+      end
     end
 
-    it 'change answer attributes' do
-      patch :update, id: answer, question_id: question, answer: { body: 'new body' }, user: user, format: :js
-      answer.reload
-      expect(answer.body).to eq 'new body'
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'not change answer attributes' do
+        patch :update, id: answer, question_id: question, answer: { body: 'new body' }, user: user2, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'new body'
+      end
+
+      it 'render update template' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user2, format: :js
+        expect(response).to render_template :update
+      end
     end
 
-    it 'assigns answer to question' do
-      patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
-      expect(assigns(:question)).to match question
-    end
-
-    it 'render update template' do
-      patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
-      expect(response).to render_template :update
+    context 'not authenticated user' do
+      it 'not change answer attributes' do
+        patch :update, id: answer, question_id: question, answer: { body: 'new body' }, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'new body'
+      end
     end
   end
 
@@ -122,10 +149,10 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'is able to select best answer' do
-        expect(answer2.best).to eq false
+        expect(answer2).to_not be_best
         post :best_answer, question_id: question.id, id: answer2
         answer2.reload
-        expect(answer2.best).to eq true
+        expect(answer2).to be_best
       end
     end
 
@@ -135,19 +162,19 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'not able to select best answer' do
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
         post :best_answer, question_id: question.id, id: answer
         answer.reload
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
       end
     end
 
     context 'non-authenticated user' do
       it 'not able to select best answer' do
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
         post :best_answer, question_id: question.id, id: answer
         answer.reload
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
       end
     end
   end
