@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    current_user.author_of?(@answer) && @answer.update(answer_params)
+    @answer.update(answer_params) if current_user.author_of?(@answer)
   end
 
   def destroy
@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
   end
 
   def best_answer
-    current_user.author_of?(@answer.question) && @answer.make_best!
+    @answer.make_best! if current_user.author_of?(@answer.question)
     redirect_to @answer.question
   end
 
