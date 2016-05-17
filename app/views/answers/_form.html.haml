@@ -1,3 +1,4 @@
-= simple_form_for [question, answer || question.answers.build], remote: true do |f|
+= simple_form_for [question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+  .answer-errors
   = f.text_area :body, label: false, placeholder: 'Answer', input_html: { class: 'form-control', required: true }
-  = f.button :submit, 'Add answer'
+  = f.button :submit, 'Save answer'

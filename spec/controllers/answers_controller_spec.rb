@@ -1,8 +1,10 @@
 require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer) }
+  let(:user2) { create(:user) }
+  let!(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
+  let!(:answer2) { create(:answer, question: question, user: user2) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -48,34 +50,131 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'PATCH #update' do
     context 'authenticated answer owner' do
-      before { sign_in answer.user }
-      it 'is able to delete his own answer' do
-        expect { delete :destroy, question_id: answer.question, id: answer }.to change(Answer, :count).by(-1)
+      before { sign_in user }
+      let(:answer) { create(:answer, question: question, user: user) }
+
+      it 'assigns the requested answer to @answer' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(assigns(:answer)).to eq answer
       end
 
-      it 'redirects to question path' do
-        answer
-        delete :destroy, question_id: answer.question, id: answer
-        expect(response).to redirect_to answer.question
+      it 'change answer attributes' do
+        patch :update, id: answer, question_id: question, answer: { body: 'new body' }, user: user, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'assigns answer to question' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(assigns(:question)).to match question
+      end
+
+      it 'render update template' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(response).to render_template :update
       end
     end
 
     context 'authenticated not answer owner' do
       before do
-        sign_in user
-        answer
+        sign_in user2
+      end
+
+      it 'not change answer attributes' do
+        patch :update, id: answer, question_id: question, answer: { body: 'new body' }, user: user2, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'new body'
+      end
+
+      it 'render update template' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user2, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'not authenticated user' do
+      it 'not change answer attributes' do
+        patch :update, id: answer, question_id: question, answer: { body: 'new body' }, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'new body'
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'authenticated answer owner' do
+      before { sign_in answer.user }
+      it 'is able to delete his own answer' do
+        expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question path' do
+        delete :destroy, question_id: answer.question, id: answer, format: :js
+        expect(response).to render_template :destroy
+      end
+    end
+
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user2
       end
       it 'is not able to delete another user answer' do
-        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
+        expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to_not change(Answer, :count)
       end
     end
 
     context 'non-authenticated user' do
       it 'is not able to delete answers' do
-        answer
-        expect { delete :destroy, question_id: answer.question, id: answer }.to_not change(Answer, :count)
+        expect { delete :destroy, question_id: answer.question, id: answer, format: :js }.to_not change(Answer, :count)
+      end
+    end
+  end
+
+  describe 'POST #best_answer' do
+    context 'authenticated question owner' do
+      before do
+        sign_in user
+      end
+
+      it 'assigns the requested answer to @answer' do
+        post :best_answer, question_id: question.id, id: answer2
+        expect(assigns(:answer)).to eq answer2
+      end
+
+      it 'redirects to question' do
+        post :best_answer, question_id: question.id, id: answer2
+        expect(response).to redirect_to answer2.question
+      end
+
+      it 'is able to select best answer' do
+        expect(answer2).to_not be_best
+        post :best_answer, question_id: question.id, id: answer2
+        answer2.reload
+        expect(answer2).to be_best
+      end
+    end
+
+    context 'authenticated not question owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'not able to select best answer' do
+        expect(answer).to_not be_best
+        post :best_answer, question_id: question.id, id: answer
+        answer.reload
+        expect(answer).to_not be_best
+      end
+    end
+
+    context 'non-authenticated user' do
+      it 'not able to select best answer' do
+        expect(answer).to_not be_best
+        post :best_answer, question_id: question.id, id: answer
+        answer.reload
+        expect(answer).to_not be_best
       end
     end
   end

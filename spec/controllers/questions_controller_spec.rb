@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
-  let(:question) { create(:question) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -130,10 +130,62 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'not question owner' do
-      before { sign_in user }
+      before { sign_in user2 }
       it 'is not able to delete another user question' do
         question
         expect { delete :destroy, id: question }.to_not change(Question, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    context 'authenticated question owner' do
+      before do
+        sign_in user
+      end
+
+      it 'assigns the requested question to @question' do
+        patch :update, id: question, question: attributes_for(:question), format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'change question attributes' do
+        patch :update, id: question, question: { title: 'new title', body: 'new body' }, user: user, format: :js
+        question.reload
+        expect(question.title).to eq 'new title'
+        expect(question.body).to eq 'new body'
+      end
+
+      it 'render update template' do
+        patch :update, id: question, question: attributes_for(:question), format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'authenticated not question owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'not change question attributes' do
+        patch :update, id: question, question: { title: 'new title', body: 'new body' }, user: user2, format: :js
+        question.reload
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
+      end
+
+      it 'render update template' do
+        patch :update, id: question, question: attributes_for(:question), format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'not authenticated user' do
+      it 'not change question attributes' do
+        patch :update, id: question, question: { title: 'new title', body: 'new body' }, user: user2, format: :js
+        question.reload
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
       end
     end
   end

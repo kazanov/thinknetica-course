@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper'
 feature 'User sign out', %q{
   In order to finish work with service
   As a user

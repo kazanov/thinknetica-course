@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
-    resources :answers
+    resources :answers do
+      member do
+        post 'best_answer'
+      end
+    end
   end
 
   root 'questions#index'
