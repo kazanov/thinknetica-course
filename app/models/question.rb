@@ -5,4 +5,6 @@ class Question < ActiveRecord::Base
 
   validates :title, presence: true, length: { maximum: 140 }
   validates :body, :user_id, presence: true
+
+  accepts_nested_attributes_for :attachments
 end
