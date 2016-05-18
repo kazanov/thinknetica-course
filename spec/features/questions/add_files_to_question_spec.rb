@@ -4,7 +4,6 @@ feature 'Add files to question', %q{
   As an author of question
   I want to be able add files to question
 } do
-
   given(:user) { create(:user) }
 
   background do
@@ -12,7 +11,7 @@ feature 'Add files to question', %q{
     visit new_question_path
   end
 
-  scenario 'User adds file when create questions' do
+  scenario 'User adds file when create questions', js: true do
     fill_in 'question[title]', with: 'Sample title'
     fill_in 'question[body]', with: 'Sample body'
     attach_file 'question[attachments_attributes][0][file]', "#{Rails.root}/spec/spec_helper.rb"

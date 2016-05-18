@@ -10,6 +10,7 @@ gem 'turbolinks'
 gem 'simple_form'
 gem 'devise'
 gem 'carrierwave'
+gem 'remotipart'
 
 gem 'haml-rails'
 

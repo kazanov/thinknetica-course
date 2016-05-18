@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = @question.answers.build
+    @answer.attachments.new
   end
 
   def create
