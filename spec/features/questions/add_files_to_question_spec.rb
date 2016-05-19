@@ -11,7 +11,7 @@ feature 'Add files to question', %q{
     visit new_question_path
   end
 
-  scenario 'User adds file when create questions', js: true do
+  scenario 'User adds files when create questions', js: true do
     fill_in 'question[title]', with: 'Sample title'
     fill_in 'question[body]', with: 'Sample body'
     click_on 'add file'

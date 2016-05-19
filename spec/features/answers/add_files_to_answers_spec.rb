@@ -12,7 +12,7 @@ feature 'Add files to answer', %q{
     visit question_path(question)
   end
 
-  scenario 'User adds file when create answers', js: true do
+  scenario 'User adds files when create answers', js: true do
     fill_in 'answer[body]', with: 'Sample body'
 
     click_on 'add file'
