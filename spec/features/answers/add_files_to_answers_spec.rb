@@ -14,7 +14,7 @@ feature 'Add files to answer', %q{
 
   scenario 'User adds file when create answers', js: true do
     fill_in 'answer[body]', with: 'Sample body'
-    attach_file 'answer[attachments_attributes][0][file]', "#{Rails.root}/spec/spec_helper.rb"
+    attach_file 'answer[attachments_attributes][1][file]', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Save'
 
     within '#answers' do

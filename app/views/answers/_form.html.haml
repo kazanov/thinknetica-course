@@ -2,5 +2,5 @@
   .answer-errors
   = f.text_area :body, label: false, placeholder: 'Answer', input_html: { class: 'form-control', required: true }
   = f.simple_fields_for :attachments do |a|
-    = a.file_field :file, label: 'File:'
+    = render 'attachments/form', f: f
   = f.button :submit, 'Save answer'

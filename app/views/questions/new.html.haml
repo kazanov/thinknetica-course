@@ -7,7 +7,7 @@
 = simple_form_for @question do |f|
   = f.input :title
   = f.text_area :body
-  %p Attachment:
-  = f.simple_fields_for :attachments do |a|
-    = a.file_field :file, label: 'File:'
+
+  = render 'attachments/form', f: f
+
   = f.button :submit, 'Save'

@@ -2,7 +2,5 @@
   .question-errors
   = f.input :title
   = f.text_area :body
-  %p Attachment (_form):
-  = f.simple_fields_for :attachments do |a|
-    = a.file_field :file, label: 'File:'
+  = render 'attachments/form', f: f
   = f.button :submit, 'Save'

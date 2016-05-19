@@ -1,0 +1,6 @@
+#attachments
+  %p Attachment:
+  = f.simple_fields_for :attachments do |a|
+    = render 'attachments/attachment_fields', f: a
+    - if f.object.new_record?
+      = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
