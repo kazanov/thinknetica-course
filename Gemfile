@@ -9,6 +9,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'simple_form'
 gem 'devise'
+gem 'carrierwave'
+gem 'remotipart'
+gem 'cocoon'
 
 gem 'haml-rails'
 
