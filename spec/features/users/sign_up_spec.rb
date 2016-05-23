@@ -12,7 +12,9 @@ feature 'User sign up', %q{
     fill_in 'user[email]', with: new_user.email
     fill_in 'user[password]', with: new_user.password
     fill_in 'user[password_confirmation]', with: new_user.password_confirmation
-    click_on 'Sign up'
+    within '.panel-body' do
+      click_on 'Sign up'
+    end
 
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
@@ -22,7 +24,9 @@ feature 'User sign up', %q{
     fill_in 'user[email]', with: user.email
     fill_in 'user[password]', with: user.password
     fill_in 'user[password_confirmation]', with: user.password_confirmation
-    click_on 'Sign up'
+    within '.panel-body' do
+      click_on 'Sign up'
+    end
 
     expect(page).to have_content 'has already been taken'
   end

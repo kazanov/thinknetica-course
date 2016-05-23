@@ -1,13 +1,15 @@
-%h2 Add question
-- if @question.errors.any?
-  %h2 Some errors:
-  %ul
-  - @question.errors.full_messages.each do |error|
-    %li= error
-= simple_form_for @question do |f|
-  = f.input :title
-  = f.text_area :body
+.row
+  .col-md-10.col-md-offset-1
+    %h2 Add question
+    - if @question.errors.any?
+      %h2 Some errors:
+      %ul
+      - @question.errors.full_messages.each do |error|
+        %li= error
+    = simple_form_for @question do |f|
+      = f.input :title
+      = f.text_area :body
 
-  = render 'attachments/form', f: f
+      = render 'attachments/form', f: f
 
-  = f.button :submit, 'Save'
+      = f.button :submit, 'Save'

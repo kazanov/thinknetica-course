@@ -1,11 +1,17 @@
-= render @question
-%hr
-%h3 Answers:
-#answers
-  = render @question.answers.best_first
+.row
+  .col-md-10.col-md-offset-1
+    = render @question
+    %hr
+    %h3 Answers:
+    #answers
+      = render @question.answers.best_first
+    .row
+      .col-md-6
+        .panel.panel-primary
+          .panel-heading
+            %h2 Add Answer
+          .panel-body
+            = render partial: 'answers/form', locals: { question: @question, answer: @answer }
 
-%h2 Add Answer
-= render partial: 'answers/form', locals: { question: @question, answer: @answer }
-
-%hr
-= link_to 'Back to questions list', root_path
+    %hr
+    = link_to 'Back to questions list', root_path
