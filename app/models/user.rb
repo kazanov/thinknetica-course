@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :votes
 
+  def user_voted?
+    votable.votes.exists?(user: current_user)
+  end
+
   def author_of?(object)
     id == object.user_id
   end

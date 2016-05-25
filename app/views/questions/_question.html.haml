@@ -1,7 +1,10 @@
 #question
   %h2 #{@question.title}
+  = render partial: 'votes/vote', locals: { votable: @question }
   %p Author: #{@question.user.email}
-  %p #{@question.body}
+  .panel.panel-default
+    .panel-body
+      %p #{@question.body}
   - if @question.attachments.exists?
     %ul
       - @question.attachments.each do |a|
