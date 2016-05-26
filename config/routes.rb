@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable do
-    resources :answers, concerns: :votable do
+    resources :answers, concerns: :votable, shallow: true do
       member do
         post 'best_answer'
       end

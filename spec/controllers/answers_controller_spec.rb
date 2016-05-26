@@ -66,11 +66,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'new body'
       end
 
-      it 'assigns answer to question' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
-        expect(assigns(:question)).to match question
-      end
-
       it 'render update template' do
         patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response).to render_template :update
