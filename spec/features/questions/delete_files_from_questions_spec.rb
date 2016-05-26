@@ -19,9 +19,8 @@ feature 'Delete files from question', %q{
     click_on 'Save'
 
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
-
     click_on 'Edit question'
-    within '#question' do
+    within '.question' do
       within '#attachments' do
         click_on 'remove file'
         expect(page).to_not have_link 'spec_helper.rb'

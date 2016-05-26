@@ -1,6 +1,10 @@
-= simple_form_for @question, remote: true, html: { id: "edit-question" } do |f|
+= form_for @question, remote: true, html: { id: "edit-question" } do |f|
   .question-errors
-  = f.input :title
-  = f.text_area :body
+  %p
+    = f.label :title, 'Title:'
+    = f.text_field :title
+  %p
+    = f.label :body, 'Body:'
+    = f.text_area :body
   = render 'attachments/form', f: f
-  = f.button :submit, 'Save'
+  = f.submit 'Save'

@@ -206,7 +206,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'upvote question' do
         expect(question.rating).to eq 0
-        post :vote_up, question: question, id: question.id, rating: 1, format: :json
+        post :vote_up, model: question, id: question.id, rating: 1, format: :json
         expect(question.rating).to eq 1
       end
     end
@@ -218,7 +218,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not upvote question and return status 403' do
         expect(question.rating).to eq 0
-        post :vote_up, question: question, id: question.id, rating: 1, format: :json
+        post :vote_up, model: question, id: question.id, rating: 1, format: :json
         expect(question.rating).to eq 0
         expect(response.status).to eq 403
       end
@@ -233,7 +233,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'downvote question' do
         expect(question.rating).to eq 0
-        post :vote_down, question: question, id: question.id, rating: -1, format: :json
+        post :vote_down, model: question, id: question.id, rating: -1, format: :json
         expect(question.rating).to eq -1
       end
     end
@@ -245,7 +245,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not downvote question and return status 403' do
         expect(question.rating).to eq 0
-        post :vote_down, question: question, id: question.id, rating: -1, format: :json
+        post :vote_down, model: question, id: question.id, rating: -1, format: :json
         expect(question.rating).to eq 0
         expect(response.status).to eq 403
       end
@@ -259,9 +259,9 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'remove vote for question' do
-        post :vote_up, question: question, id: question.id, rating: 1, format: :json
+        post :vote_up, model: question, id: question.id, rating: 1, format: :json
         expect(question.rating).to eq 1
-        post :remove_vote, question: question, id: question.id, rating: 0, format: :json
+        post :remove_vote, model: question, id: question.id, rating: 0, format: :json
         expect(question.rating).to eq 0
       end
     end
@@ -272,7 +272,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'does not remove vote for question and return status 403' do
-        post :vote_down, question: question, id: question.id, rating: -1, format: :json
+        post :remove_vote, model: question, id: question.id, rating: 0, format: :json
         expect(response.status).to eq 403
       end
     end

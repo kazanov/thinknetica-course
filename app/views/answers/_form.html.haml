@@ -1,4 +1,4 @@
-= form_for [@question, @answer], remote: true, html: { id: "edit-answer-#{@answer.id}" } do |f|
+= form_for [@question, @answer], remote: true, html: { id: "edit-answer#{@answer.id}" } do |f|
   .answer-errors
   = f.text_area :body, label: false, placeholder: 'Answer'
   = f.fields_for :attachments do |a|

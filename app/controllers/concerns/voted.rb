@@ -3,7 +3,7 @@ module Voted
 
   included do
     before_action :find_votable, only: [:vote_up, :vote_down, :remove_vote]
-    before_action :author?, only: [:vote_up, :vote_down]
+    before_action :author?, only: [:vote_up, :vote_down, :remove_vote]
   end
 
   def vote_up

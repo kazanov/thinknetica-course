@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
+  include Voted
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :destroy, :update]
-  include Voted
 
   def index
     @questions = Question.all

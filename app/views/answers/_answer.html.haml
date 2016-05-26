@@ -1,8 +1,9 @@
 - if answer.persisted?
-  %div{id: "answer-#{answer.id}"}
+  %div{id: "answer#{answer.id}"}
     .panel.panel-default
       .panel-heading
         Author: #{answer.user.email}
+        = render partial: 'votes/vote', locals: { votable: answer }
         - if answer.best
           %p SOLUTION:
       .panel-body
@@ -18,7 +19,7 @@
           - if current_user.author_of?(answer)
             = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
             = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-            = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-answer' } do |f|
+            = form_for answer, remote: true, html: { id: "edit-answer#{answer.id}", class: 'edit-answer' } do |f|
               .answer-errors
               = f.text_area :body, label: false, placeholder: 'Answer'
               = f.simple_fields_for :attachments do |a|

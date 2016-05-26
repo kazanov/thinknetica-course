@@ -15,7 +15,7 @@ feature 'User is able to edit question', %q{
     end
 
     scenario 'try to edit his question with valid parameters', js: true do
-      within '#question' do
+      within "#question#{question.id}" do
         click_on 'Edit question'
         fill_in 'question[title]', with: 'edited title'
         fill_in 'question[body]', with: 'edited body'
@@ -30,7 +30,7 @@ feature 'User is able to edit question', %q{
     end
 
     scenario 'try to edit his question with invalid parameters', js: true do
-      within '#question' do
+      within "#question#{question.id}" do
         click_on 'Edit question'
         fill_in 'question[title]', with: ''
         fill_in 'question[body]', with: ''
@@ -52,7 +52,7 @@ feature 'User is able to edit question', %q{
     end
 
     scenario 'not able to edit other user question', js: true do
-      within '#question' do
+      within "#question#{question.id}" do
         expect(page).to_not have_content 'Edit question'
       end
     end
