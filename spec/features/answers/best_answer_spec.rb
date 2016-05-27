@@ -19,7 +19,7 @@ feature 'Question author is able to select best answer', %q{
     scenario 'is able to select best answer', js: true do
       expect(page).to_not have_content 'SOLUTION:'
       within '#answers' do
-        within "#answer-#{answer2.id}" do
+        within "#answer#{answer2.id}" do
           click_on 'Solution!'
 
           expect(page).to have_content 'SOLUTION:'
@@ -29,17 +29,17 @@ feature 'Question author is able to select best answer', %q{
 
     scenario 'is able to select another best answer', js: true do
       within '#answers' do
-        within "#answer-#{answer2.id}" do
+        within "#answer#{answer2.id}" do
           click_on 'Solution!'
         end
 
-        within "#answer-#{answer.id}" do
+        within "#answer#{answer.id}" do
           click_on 'Solution!'
 
           expect(page).to have_content 'SOLUTION:'
         end
 
-        within "#answer-#{answer2.id}" do
+        within "#answer#{answer2.id}" do
           expect(page).to_not have_content 'SOLUTION:'
         end
       end
@@ -49,7 +49,7 @@ feature 'Question author is able to select best answer', %q{
       expect(first('#answers div')).to have_content answer.body
 
       within '#answers' do
-        within "#answer-#{answer2.id}" do
+        within "#answer#{answer2.id}" do
           click_on 'Solution!'
         end
       end

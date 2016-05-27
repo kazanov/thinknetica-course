@@ -9,8 +9,9 @@ RSpec.describe Answer, type: :model do
   it { should belong_to :user }
   it { should have_db_index :user_id }
 
-  it { should have_many(:attachments) }
+  it { should have_many(:attachments).dependent(:destroy) }
   it { should accept_nested_attributes_for :attachments }
+  it { should have_many(:votes).dependent(:destroy) }
 
   describe 'make_best!' do
     let(:user) { create(:user) }
@@ -30,4 +31,6 @@ RSpec.describe Answer, type: :model do
       expect(answer2).to_not be_best
     end
   end
+
+  it_behaves_like 'votable'
 end

@@ -66,11 +66,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'new body'
       end
 
-      it 'assigns answer to question' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
-        expect(assigns(:question)).to match question
-      end
-
       it 'render update template' do
         patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response).to render_template :update
@@ -175,6 +170,86 @@ RSpec.describe AnswersController, type: :controller do
         post :best_answer, question_id: question.id, id: answer
         answer.reload
         expect(answer).to_not be_best
+      end
+    end
+  end
+
+  describe 'POST #vote_up' do
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'upvote answer' do
+        expect(answer.rating).to eq 0
+        post :vote_up, model: answer, id: answer.id, rating: 1, format: :json
+        expect(answer.rating).to eq 1
+      end
+    end
+
+    context 'authenticated answer owner' do
+      before do
+        sign_in user
+      end
+
+      it 'does not upvote answer and return status 403' do
+        expect(answer.rating).to eq 0
+        post :vote_up, model: answer, id: answer.id, rating: 1, format: :json
+        expect(answer.rating).to eq 0
+        expect(response.status).to eq 403
+      end
+    end
+  end
+
+  describe 'POST #vote_down' do
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'downvote answer' do
+        expect(answer.rating).to eq 0
+        post :vote_down, model: answer, id: answer.id, rating: -1, format: :json
+        expect(answer.rating).to eq(-1)
+      end
+    end
+
+    context 'authenticated answer owner' do
+      before do
+        sign_in user
+      end
+
+      it 'does not downvote answer and return status 403' do
+        expect(answer.rating).to eq 0
+        post :vote_down, model: answer, id: answer.id, rating: -1, format: :json
+        expect(answer.rating).to eq 0
+        expect(response.status).to eq 403
+      end
+    end
+  end
+
+  describe 'DELETE #remove_vote' do
+    context 'authenticated not answer owner' do
+      before do
+        sign_in user2
+      end
+
+      it 'remove vote for answer' do
+        post :vote_up, model: answer, id: answer.id, rating: 1, format: :json
+        expect(answer.rating).to eq 1
+        post :remove_vote, model: answer, id: answer.id, rating: 0, format: :json
+        expect(answer.rating).to eq 0
+      end
+    end
+
+    context 'authenticated answer owner' do
+      before do
+        sign_in user
+      end
+
+      it 'does not remove vote for answer and return status 403' do
+        post :remove_vote, model: answer, id: answer.id, rating: -1, format: :json
+        expect(response.status).to eq 403
       end
     end
   end

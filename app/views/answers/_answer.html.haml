@@ -1,16 +1,27 @@
 - if answer.persisted?
-  %div{id: "answer-#{answer.id}"}
-    %p Author: #{answer.user.email}
-    - if answer.best
-      %p SOLUTION:
-    %p #{answer.body}
-    - if answer.attachments.exists?
-      %ul
-        - answer.attachments.each do |a|
-          %li= link_to a.file.filename, a.file.url
-    - if current_user && current_user.author_of?(answer.question)
-      = link_to 'Solution!', best_answer_question_answer_path(answer.question, answer), method: :post
-    - if current_user && current_user.author_of?(answer)
-      = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-      = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, remote: true
-      = render partial: 'answers/form', locals: { question: @question, answer: answer }
+  %div{id: "answer#{answer.id}"}
+    .panel.panel-default
+      .panel-heading
+        Author: #{answer.user.email}
+        = render partial: 'votes/vote', locals: { votable: answer }
+        - if answer.best
+          %p SOLUTION:
+      .panel-body
+        %p #{answer.body}
+        - if answer.attachments.exists?
+          %ul
+            - answer.attachments.each do |a|
+              %li= link_to a.file.filename, a.file.url
+      - if current_user
+        .panel-footer
+          - if current_user.author_of?(answer.question)
+            = link_to 'Solution!', best_answer_answer_path(answer), method: :post
+          - if current_user.author_of?(answer)
+            = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+            = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+            = form_for answer, remote: true, html: { id: "edit-answer#{answer.id}", class: 'edit-answer' } do |f|
+              .answer-errors
+              = f.text_area :body, label: false, placeholder: 'Answer'
+              = f.simple_fields_for :attachments do |a|
+                = render 'attachments/form', f: f
+              = f.submit 'Save answer'

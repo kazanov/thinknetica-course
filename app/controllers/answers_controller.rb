@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
+  include Voted
   before_action :authenticate_user!
-  before_action :find_question, only: [:create, :update, :destroy, :best_answer]
+  before_action :find_question, only: [:create]
   before_action :find_answer, only: [:update, :destroy, :best_answer]
 
   def create
@@ -24,13 +25,13 @@ class AnswersController < ApplicationController
 
   def best_answer
     @answer.make_best! if current_user.author_of?(@answer.question)
-    redirect_to @question
+    redirect_to @answer.question
   end
 
   private
 
   def find_answer
-    @answer = @question.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def find_question

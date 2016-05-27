@@ -49,7 +49,7 @@ feature 'User is able to edit answer', %q{
     end
 
     scenario 'not able to edit other users answer' do
-      within '#answer-2' do
+      within '#answer2' do
         expect(page).to have_content answer2.body
         expect(page).to_not have_link 'Edit answer'
       end
