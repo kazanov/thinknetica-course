@@ -24,7 +24,7 @@ module Voted
   private
 
   def author?
-    render nothing: true, status: 403 if @votable.user_id == current_user.id
+    render nothing: true, status: 403 if current_user.author_of?(@votable)
   end
 
   def model_klass

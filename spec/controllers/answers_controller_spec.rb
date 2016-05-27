@@ -210,7 +210,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'downvote answer' do
         expect(answer.rating).to eq 0
         post :vote_down, model: answer, id: answer.id, rating: -1, format: :json
-        expect(answer.rating).to eq -1
+        expect(answer.rating).to eq(-1)
       end
     end
 

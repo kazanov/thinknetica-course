@@ -31,4 +31,6 @@ RSpec.describe Answer, type: :model do
       expect(answer2).to_not be_best
     end
   end
+
+  it_behaves_like 'votable'
 end
