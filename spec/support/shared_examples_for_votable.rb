@@ -40,9 +40,10 @@ shared_examples 'votable' do
 
   describe '#rating' do
     it 'should return sum of all votes' do
-      votable.vote_up(user)
-      votable.vote_up(user2)
-      expect(votable.rating).to eq(2)
+      users = create_list(:user, 7)
+      users[0..4].each { |u| votable.vote_up(u) }
+      users[5..7].each { |u| votable.vote_down(u) }
+      expect(votable.rating).to eq(3)
     end
   end
 
