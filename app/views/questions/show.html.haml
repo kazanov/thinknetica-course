@@ -3,7 +3,7 @@
     = render @question
     %hr
     %h3 Answers:
-    #answers
+    #answers{"data-question-id" => "#{@question.id}"}
       = render @question.answers.best_first
     .row
       .col-md-6
@@ -14,3 +14,5 @@
             = render 'answers/form'
     %hr
     = link_to 'Back to questions list', root_path
+
+= subscribe_to "/questions/#{@question.id}/answers"

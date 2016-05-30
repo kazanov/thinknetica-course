@@ -4,4 +4,5 @@
   <% end %>
 <% else %>
   $('div#answer<%= @answer.id %>').replaceWith('<%= j render @answer %>');
+  $('div.panel-body .new-answer #answer_body').val('');
 <% end %>
