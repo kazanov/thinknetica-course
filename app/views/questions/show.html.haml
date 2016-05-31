@@ -1,6 +1,15 @@
 .row
   .col-md-10.col-md-offset-1
-    = render @question
+    %div{id: "question#{@question.id}", class: 'question'}
+      = render @question
+      %hr
+      %p Comments:
+      #question-comments
+        = render @question.comments.order('created_at')
+        .comments-form
+          = render 'comments/form', commentable: @question
+      - if current_user
+        = link_to 'Add comment', '', class: 'add-comment-link'
     %hr
     %h3 Answers:
     #answers{"data-question-id" => "#{@question.id}"}

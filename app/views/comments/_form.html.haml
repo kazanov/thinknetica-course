@@ -1,0 +1,6 @@
+- if current_user
+  .comment-errors
+  = form_for [commentable, @comment], remote: true, html: { id: "question-comments-form" } do |f|
+    = f.text_area :text
+
+    = f.submit 'Save'
