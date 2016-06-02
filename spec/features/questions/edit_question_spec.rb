@@ -15,18 +15,15 @@ feature 'User is able to edit question', %q{
     end
 
     scenario 'try to edit his question with valid parameters', js: true do
-      within "#question#{question.id}" do
-        click_on 'Edit question'
-        fill_in 'question[title]', with: 'edited title'
-        fill_in 'question[body]', with: 'edited body'
-        click_on 'Save'
+      click_on 'Edit question'
+      fill_in 'question[title]', with: 'edited title'
+      fill_in 'question[body]', with: 'edited body'
+      click_on 'Save'
 
-        expect(page).to_not have_content question.title
-        expect(page).to_not have_content question.body
-        expect(page).to have_content 'edited title'
-        expect(page).to have_content 'edited body'
-        expect(page).to_not have_selector 'textarea'
-      end
+      expect(page).to have_content 'edited title'
+      expect(page).to have_content 'edited body'
+      expect(page).to_not have_content question.title
+      expect(page).to_not have_content question.body
     end
 
     scenario 'try to edit his question with invalid parameters', js: true do
