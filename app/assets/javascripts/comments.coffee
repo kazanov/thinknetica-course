@@ -8,8 +8,10 @@ ready = ->
 
   PrivatePub.subscribe '/comments', (data, channel) ->
     comment = $.parseJSON(data['comment'])
-    $('#' + data.commentable_type + data.commentable_id + '-comments').append('<p>' + data.user_email + ': ' + comment.text + '</p>');
-    $('#' + data.commentable_type + data.commentable_id + '-comments-form').hide()
+    commentable_type = comment.commentable_type.toLowerCase()
+    commentable_id = comment.commentable_id
+    $('#' + commentable_type + commentable_id + '-comments').append('<p>' + data.user_email + ': ' + comment.text + '</p>');
+    $('#' + commentable_type + commentable_id + '-comments-form').hide()
 
 $(document).ready(ready)
 $(document).on('page:load', ready)

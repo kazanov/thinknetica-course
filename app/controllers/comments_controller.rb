@@ -8,8 +8,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.js do
-          PrivatePub.publish_to '/comments', comment: @comment.to_json, commentable_type: @commentable.class.name.underscore,
-                                             commentable_id: @commentable.id, user_email: @comment.user.email
+          PrivatePub.publish_to '/comments', comment: @comment.to_json, user_email: @comment.user.email
           render nothing: true
         end
       else

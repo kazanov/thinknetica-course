@@ -24,7 +24,6 @@ feature 'User is able to edit question', %q{
       expect(page).to have_content 'edited body'
       expect(page).to_not have_content question.title
       expect(page).to_not have_content question.body
-      expect(page).to_not have_selector 'textarea'
     end
 
     scenario 'try to edit his question with invalid parameters', js: true do
