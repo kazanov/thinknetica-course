@@ -5,7 +5,17 @@ class CommentsController < ApplicationController
   def create
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
-    @comment.save
+    respond_to do |format|
+      if @comment.save
+        format.js do
+          PrivatePub.publish_to '/comments', comment: @comment.to_json, commentable_type: @commentable.class.name.underscore,
+                                             commentable_id: @commentable.id, user_email: @comment.user.email
+          render nothing: true
+        end
+      else
+        format.js
+      end
+    end
   end
 
   private

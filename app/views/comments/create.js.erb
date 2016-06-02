@@ -2,8 +2,4 @@
   <% @comment.errors.full_messages.each do |message| %>
     $('.comment-errors').append('<%= j message %>')
   <% end %>
-<% else %>
-  $('.comments-form').hide()
-  $('#question-comments').append('<p><%= j @comment.user.email %>: ' + '<%= j @comment.text %></p>')
-  $('.add-comment-link').show()
 <% end %>

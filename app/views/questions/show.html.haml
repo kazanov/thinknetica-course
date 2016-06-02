@@ -4,12 +4,12 @@
       = render @question
       %hr
       %p Comments:
-      #question-comments
+      %div{id: "question#{@question.id}-comments"}
         = render @question.comments.order('created_at')
-        .comments-form
-          = render 'comments/form', commentable: @question
+      %div{id: "question#{@question.id}-comments-form", class: "comments-form"}
+        = render 'comments/form', commentable: @question
       - if current_user
-        = link_to 'Add comment', '', class: 'add-comment-link'
+        = link_to 'Add comment', '', class: 'add-comment-link', data: { commentable_id: @question.id, commentable_type: 'question' }
     %hr
     %h3 Answers:
     #answers{"data-question-id" => "#{@question.id}"}
@@ -25,3 +25,4 @@
     = link_to 'Back to questions list', root_path
 
 = subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to '/comments'

@@ -1,12 +1,13 @@
 require_relative '../features_helper'
-feature 'User is able to comment question', %q{
+feature 'User is able to comment answer', %q{
   In order to ask details
   As an authenticated user
-  I want to be able to comment question
+  I want to be able to comment answer
 } do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
   given!(:question) { create(:question, user: user) }
+  given!(:answer) { create(:answer, question: question, user: user) }
 
   context 'Authenticated user' do
     before do
@@ -14,8 +15,8 @@ feature 'User is able to comment question', %q{
       visit question_path(question)
     end
 
-    scenario 'Try to comment question with valid parameters', js: true do
-      within "#question#{question.id}" do
+    scenario 'Try to comment answer with valid parameters', js: true do
+      within "#answer#{answer.id}" do
         click_on 'Add comment'
         fill_in 'comment[text]', with: 'Sample comment'
         click_on 'Save'
@@ -24,8 +25,8 @@ feature 'User is able to comment question', %q{
       end
     end
 
-    scenario 'Try to comment question with invalid parameters', js: true do
-      within "#question#{question.id}" do
+    scenario 'Try to comment answer with invalid parameters', js: true do
+      within "#answer#{answer.id}" do
         click_on 'Add comment'
         click_on 'Save'
 
@@ -34,9 +35,9 @@ feature 'User is able to comment question', %q{
     end
   end
 
-  scenario 'Non-authenticated user try to comment question' do
+  scenario 'Non-authenticated user try to comment answer' do
     visit question_path(question)
-    within "#question#{question.id}" do
+    within "#answer#{answer.id}" do
       expect(page).to_not have_link 'Add comment'
     end
   end
