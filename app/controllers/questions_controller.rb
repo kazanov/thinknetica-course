@@ -42,6 +42,7 @@ class QuestionsController < ApplicationController
 
   def build_answer
     @answer = @question.answers.new
+    @answer.attachments.new
   end
 
   def check_author
