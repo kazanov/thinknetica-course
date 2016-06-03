@@ -10,6 +10,6 @@
       = f.input :title
       = f.text_area :body
 
-      = render 'attachments/form', f: f
+      = render 'attachments/form', f: f, parent: @question.attachments.new
 
       = f.button :submit, 'Save'

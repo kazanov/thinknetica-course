@@ -1,5 +1,5 @@
 - if current_user
   .comment-errors
-  = form_for [commentable, @comment || Comment.new], remote: true, html: { id: "#{commentable.class.name.underscore}-comments-form" } do |f|
+  = form_for [commentable, Comment.new], remote: true, html: { id: "#{commentable.class.name.underscore}-comments-form" } do |f|
     = f.text_area :text
     = f.submit 'Save'

@@ -21,6 +21,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'private_pub'
 gem 'thin'
+gem 'responders', '~> 2.0'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
