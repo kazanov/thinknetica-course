@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: [:show, :destroy, :update, :check_author]
   before_action :check_author, only: [:update, :destroy]
   before_action :build_answer, only: :show
+  after_action  :publish_question, only: :create
 
   respond_to :js
   respond_to :json, only: :create
@@ -21,13 +22,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-    if @question.save
-      PrivatePub.publish_to '/questions', question: @question.to_json
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
@@ -40,6 +35,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    PrivatePub.publish_to('/questions', question: @question.to_json) if @question.valid?
+  end
 
   def build_answer
     @answer = @question.answers.new
