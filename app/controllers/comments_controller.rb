@@ -7,18 +7,6 @@ class CommentsController < ApplicationController
 
   def create
     respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))
-    # @comment = @commentable.comments.new(comment_params)
-    # @comment.user = current_user
-    # respond_to do |format|
-    #   if @comment.save
-    #     format.js do
-    #       PrivatePub.publish_to '/comments', comment: @comment.to_json, user_email: @comment.user.email
-    #       render nothing: true
-    #     end
-    #   else
-    #     format.js
-    #   end
-    # end
   end
 
   private
