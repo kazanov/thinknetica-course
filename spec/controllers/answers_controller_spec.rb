@@ -83,9 +83,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to_not eq 'new body'
       end
 
-      it 'render update template' do
+      it 'redirects to question' do
         patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user2, format: :js
-        expect(response).to render_template :update
+        expect(response).to redirect_to question_path(question)
       end
     end
 

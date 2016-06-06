@@ -3,24 +3,20 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:update, :destroy, :best_answer]
+  before_action :check_author, only: [:update, :destroy]
+
+  respond_to :js
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    respond_with(@answer.update(answer_params))
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash[:notice] = 'Answer successfully deleted.'
-    else
-      flash[:notice] = 'You are not allowed to delete this question.'
-    end
+    respond_with(@answer.destroy)
   end
 
   def best_answer
@@ -29,6 +25,10 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def check_author
+    redirect_to @answer.question unless current_user.author_of?(@answer)
+  end
 
   def find_answer
     @answer = Answer.find(params[:id])
