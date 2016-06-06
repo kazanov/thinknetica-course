@@ -23,6 +23,9 @@ gem 'private_pub'
 gem 'thin'
 gem 'responders', '~> 2.0'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'
