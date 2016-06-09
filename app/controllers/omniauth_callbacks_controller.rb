@@ -1,6 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_action :process_callback
-
+  
   def facebook
   end
 
