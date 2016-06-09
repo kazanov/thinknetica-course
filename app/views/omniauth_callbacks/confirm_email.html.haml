@@ -1,0 +1,13 @@
+.row
+  .col-md-4.col-md-offset-4
+    .panel.panel-default
+      .panel-heading
+        %h2 Type your email
+      .panel-body
+        = form_tag confirm_email_path, method: :post do
+          .form-inputs
+            = email_field 'auth[info]', :email, autofocus: true, class: 'form-control'
+            = hidden_field_tag 'auth[provider]', @auth_hash.provider
+            = hidden_field_tag 'auth[uid]', @auth_hash.uid
+          .form-actions
+            %button Send

@@ -2,7 +2,6 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
-
   it { should have_many(:questions) }
   it { should have_many(:answers) }
   it { should have_many(:votes) }
@@ -36,6 +35,7 @@ RSpec.describe User, type: :model do
     context 'user has no authorization' do
       context 'user already exist' do
         let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: user.email }) }
+
         it 'does not create new user' do
           expect { User.find_for_oauth(auth) }.to_not change(User, :count)
         end
