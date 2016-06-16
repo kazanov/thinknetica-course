@@ -8,8 +8,9 @@ feature 'Twitter sign in', %q{
     visit new_user_session_path
     mock_auth_valid_hash('twitter', nil)
     click_on 'Sign in with Twitter'
-    fill_in 'auth[info][email]', with: 'sample@sample.com'
+    fill_in 'email', with: 'sample@sample.com'
     click_on 'Send'
+    expect(page).to have_content 'You have to confirm your email address before continuing.'
 
     open_email 'sample@sample.com'
     current_email.click_link 'Confirm my account'
@@ -25,7 +26,6 @@ feature 'Twitter sign in', %q{
     visit new_user_session_path
     mock_auth_invalid_hash('twitter')
     click_on 'Sign in with Twitter'
-
-    expect(page).to have_content 'Could not authenticate you from Twitter because "Invalid credentials"'
+    expect(page).to have_content 'Could not authenticate you because of invalid credentials'
   end
 end

@@ -17,6 +17,6 @@ feature 'Facebook sign in', %q{
     mock_auth_invalid_hash('facebook')
     click_on 'Sign in with Facebook'
 
-    expect(page).to have_content 'Could not authenticate you from Facebook because "Invalid credentials"'
+    expect(page).to have_content 'Could not authenticate you because of invalid credentials'
   end
 end

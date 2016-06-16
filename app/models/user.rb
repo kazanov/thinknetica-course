@@ -25,7 +25,9 @@ class User < ActiveRecord::Base
       password = Devise.friendly_token[0, 20]
       user = User.new(email: email, password: password, password_confirmation: password)
       user.skip_confirmation! if SKIP_CONFIRMATION.include? auth.provider
-      return nil unless user.save
+      user.save
+      user.create_authorization(auth) if user.persisted?
+      return user
     end
     user.create_authorization(auth)
     user
