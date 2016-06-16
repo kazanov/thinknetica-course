@@ -23,6 +23,10 @@ gem 'private_pub'
 gem 'thin'
 gem 'responders', '~> 2.0'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'
@@ -40,11 +44,13 @@ group :development do
   gem 'better_errors'
   gem 'spring-commands-rspec'
   gem 'bullet'
+  gem 'letter_opener'
 end
 
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
   gem 'database_cleaner'
 end

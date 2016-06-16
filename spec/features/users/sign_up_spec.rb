@@ -9,6 +9,7 @@ feature 'User sign up', %q{
 
   scenario 'User try to sign up' do
     visit new_user_registration_path
+    clear_emails
     fill_in 'user[email]', with: new_user.email
     fill_in 'user[password]', with: new_user.password
     fill_in 'user[password_confirmation]', with: new_user.password_confirmation
@@ -16,7 +17,16 @@ feature 'User sign up', %q{
       click_on 'Sign up'
     end
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    open_email(new_user.email)
+    current_email.click_link 'Confirm my account'
+    expect(page).to have_content 'Your email address has been successfully confirmed'
+
+    visit new_user_session_path
+    fill_in 'user[email]', with: new_user.email
+    fill_in 'user[password]', with: new_user.password
+    click_on 'Log in'
+
+    expect(page).to have_content 'Signed in successfully.'
   end
 
   scenario 'Already registered user try to sign up' do

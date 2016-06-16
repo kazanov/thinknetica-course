@@ -39,3 +39,6 @@ Style/PercentLiteralDelimiters:
 
 Lint/ShadowingOuterLocalVariable:
   Enabled: false
+
+Style/BracesAroundHashParameters:
+  EnforcedStyle: context_dependent
