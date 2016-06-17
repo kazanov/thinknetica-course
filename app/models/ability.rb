@@ -23,10 +23,10 @@ class Ability
 
   def vote_abilities
     can [:vote_up, :vote_down], [Question, Answer] do |votable|
-      votable.votes.find_by(user_id: @user.id).nil? && !@user.author_of?(votable)
+      votable.able_to_vote(@user)
     end
     can :remove_vote, [Question, Answer] do |votable|
-      votable.votes.find_by(user_id: @user.id) && !@user.author_of?(votable)
+      votable.voted_by?(@user)
     end
   end
 

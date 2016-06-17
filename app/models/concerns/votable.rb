@@ -23,4 +23,8 @@ module Votable
   def rating
     votes.sum(:value)
   end
+
+  def able_to_vote(user)
+  !voted_by?(user) && !user.author_of?(self)
+  end
 end

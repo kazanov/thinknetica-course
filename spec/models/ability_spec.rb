@@ -25,6 +25,8 @@ describe Ability do
     let(:other_user_question) { create(:question, user: other_user) }
     let(:own_answer) { create(:answer, question: own_question, user: user) }
     let(:other_user_answer) { create(:answer, question: other_user_question, user: other_user) }
+    let(:vote) { create(:vote, user: user, votable: answer) }
+    let(:voted_up_answer) { create(:answer, question: other_user_question, user: other_user, vote: vote) }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
