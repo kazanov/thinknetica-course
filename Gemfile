@@ -27,6 +27,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
+gem 'cancancan'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'

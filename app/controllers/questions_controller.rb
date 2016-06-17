@@ -9,6 +9,8 @@ class QuestionsController < ApplicationController
   respond_to :js
   respond_to :json, only: :create
 
+  authorize_resource
+
   def index
     respond_with(@questions = Question.all)
   end
