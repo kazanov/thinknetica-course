@@ -28,6 +28,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
 gem 'cancancan'
+gem 'doorkeeper'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
