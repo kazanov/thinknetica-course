@@ -5,6 +5,15 @@ Rails.application.routes.draw do
     post 'confirm_email', to: 'omniauth_callbacks#confirm_email'
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+        get :profiles_list, on: :collection
+      end
+    end
+  end
+
   concern :votable do
     member do
       post 'vote_up'
