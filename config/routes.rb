@@ -7,9 +7,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resource :profiles do
+      resources :profiles do
         get :me, on: :collection
-        get :profiles_list, on: :collection
       end
     end
   end
