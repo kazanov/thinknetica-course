@@ -28,6 +28,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
 gem 'cancancan'
+gem 'doorkeeper'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
@@ -55,4 +56,5 @@ group :test do
   gem 'capybara-email'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'json_spec'
 end
