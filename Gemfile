@@ -29,6 +29,7 @@ gem 'omniauth-twitter'
 
 gem 'cancancan'
 gem 'doorkeeper'
+gem 'active_model_serializers'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
