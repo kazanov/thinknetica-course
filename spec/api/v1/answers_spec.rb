@@ -89,4 +89,39 @@ describe 'Answers API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    let(:access_token) { create(:access_token) }
+    let!(:question) { create(:question) }
+
+    context 'valid attributes' do
+      it 'creates and saves question in db' do
+        expect { post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                           answer: attributes_for(:answer),
+                                           question_id: question.id }.to change(Answer, :count).by(1)
+      end
+
+      it 'returns 201 status' do
+        post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                  answer: attributes_for(:answer),
+                                  question_id: question.id
+        expect(response.status).to eq 201
+      end
+    end
+
+    context 'invalid attributes' do
+      it 'not saves answer in db' do
+        expect { post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                           answer: attributes_for(:invalid_answer),
+                                           question_id: question.id }.to_not change(Answer, :count)
+      end
+
+      it 'returns 422 status' do
+        post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                  answer: attributes_for(:invalid_answer),
+                                  question_id: question.id
+        expect(response.status).to eq 422
+      end
+    end
+  end
 end

@@ -1,4 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+  authorize_resource class: Answer
+
   def index
     @questions = Question.all
     respond_with @questions
@@ -15,6 +17,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
+    params.require(:question).permit(:title, :body)
   end
 end
