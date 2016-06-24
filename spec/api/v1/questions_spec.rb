@@ -86,7 +86,7 @@ describe 'Questions API' do
         end
       end
 
-      it 'contains comments in question' do
+      it 'question object contains comments' do
         expect(response.body).to have_json_size(3).at_path('comments')
       end
 
@@ -96,7 +96,7 @@ describe 'Questions API' do
         end
       end
 
-      it 'contains attachments in question' do
+      it 'question object contains attachments' do
         expect(response.body).to have_json_size(2).at_path('attachments')
       end
 
