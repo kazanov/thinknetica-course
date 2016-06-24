@@ -105,4 +105,30 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    let(:access_token) { create(:access_token) }
+
+    context 'valid attributes' do
+      it 'creates and saves question in db' do
+        expect { post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:question) }.to change(Question, :count).by(1)
+      end
+
+      it 'returns 201 status' do
+        post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:question)
+        expect(response.status).to eq 201
+      end
+    end
+
+    context 'invalid attributes' do
+      it 'not saves question in db' do
+        expect { post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+      end
+
+      it 'returns 422 status' do
+        post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:invalid_question)
+        expect(response.status).to eq 422
+      end
+    end
+  end
 end
