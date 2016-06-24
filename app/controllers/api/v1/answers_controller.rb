@@ -20,5 +20,4 @@ class Api::V1::AnswersController < Api::V1::BaseController
   def answer_params
     params.require(:answer).permit(:body)
   end
-
 end

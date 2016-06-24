@@ -66,7 +66,7 @@ describe 'Answers API' do
 
       %w(id body created_at updated_at).each do |attr|
         it "answer object contains #{attr}" do
-          expect(response.body).to be_json_eql(answer.send(attr.to_sym).to_json).at_path("#{attr}")
+          expect(response.body).to be_json_eql(answer.send(attr.to_sym).to_json).at_path(attr.to_s)
         end
       end
 
@@ -96,9 +96,11 @@ describe 'Answers API' do
 
     context 'valid attributes' do
       it 'creates and saves question in db' do
-        expect { post api_v1_answers_path, format: :json, access_token: access_token.token,
-                                           answer: attributes_for(:answer),
-                                           question_id: question.id }.to change(Answer, :count).by(1)
+        expect {
+          post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                    answer: attributes_for(:answer),
+                                    question_id: question.id
+        }.to change(Answer, :count).by(1)
       end
 
       it 'returns 201 status' do
@@ -111,9 +113,11 @@ describe 'Answers API' do
 
     context 'invalid attributes' do
       it 'not saves answer in db' do
-        expect { post api_v1_answers_path, format: :json, access_token: access_token.token,
-                                           answer: attributes_for(:invalid_answer),
-                                           question_id: question.id }.to_not change(Answer, :count)
+        expect {
+          post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                    answer: attributes_for(:invalid_answer),
+                                    question_id: question.id
+        }.to_not change(Answer, :count)
       end
 
       it 'returns 422 status' do

@@ -82,7 +82,7 @@ describe 'Questions API' do
 
       %w(id title body created_at updated_at).each do |attr|
         it "question object contains #{attr}" do
-          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("#{attr}")
+          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path(attr.to_s)
         end
       end
 
@@ -111,22 +111,34 @@ describe 'Questions API' do
 
     context 'valid attributes' do
       it 'creates and saves question in db' do
-        expect { post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect {
+          post api_v1_questions_path, format: :json,
+                                      access_token: access_token.token,
+                                      question: attributes_for(:question)
+        }.to change(Question, :count).by 1
       end
 
       it 'returns 201 status' do
-        post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:question)
+        post api_v1_questions_path, format: :json,
+                                    access_token: access_token.token,
+                                    question: attributes_for(:question)
         expect(response.status).to eq 201
       end
     end
 
     context 'invalid attributes' do
       it 'not saves question in db' do
-        expect { post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect {
+          post api_v1_questions_path, format: :json,
+                                      access_token: access_token.token,
+                                      question: attributes_for(:invalid_question)
+        }.to_not change(Question, :count)
       end
 
       it 'returns 422 status' do
-        post api_v1_questions_path, format: :json, access_token: access_token.token, question: attributes_for(:invalid_question)
+        post api_v1_questions_path, format: :json,
+                                    access_token: access_token.token,
+                                    question: attributes_for(:invalid_question)
         expect(response.status).to eq 422
       end
     end
