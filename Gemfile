@@ -30,6 +30,8 @@ gem 'omniauth-twitter'
 gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
