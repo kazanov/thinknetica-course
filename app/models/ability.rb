@@ -36,5 +36,6 @@ class Ability
     can [:update, :destroy], [Question, Answer], user_id: @user.id
     can :best_answer, Answer, question: { user_id: @user.id }
     vote_abilities
+    can :me, User, id: user.id
   end
 end
