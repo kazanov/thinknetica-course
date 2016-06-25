@@ -91,7 +91,8 @@ describe 'Answers API' do
   end
 
   describe 'POST /create' do
-    let(:access_token) { create(:access_token) }
+    let(:user) { create(:user) }
+    let(:access_token) { create(:access_token, resource_owner_id: user.id) }
     let!(:question) { create(:question) }
 
     context 'valid attributes' do
@@ -101,6 +102,20 @@ describe 'Answers API' do
                                     answer: attributes_for(:answer),
                                     question_id: question.id
         }.to change(Answer, :count).by(1)
+      end
+
+      it 'connects answer and user' do
+        post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                  answer: attributes_for(:answer),
+                                  question_id: question.id
+        expect(assigns(:answer).user_id).to match user.id
+      end
+
+      it 'connects answer and question' do
+        post api_v1_answers_path, format: :json, access_token: access_token.token,
+                                  answer: attributes_for(:answer),
+                                  question_id: question.id
+        expect(assigns(:answer).question_id).to match question.id
       end
 
       it 'returns 201 status' do

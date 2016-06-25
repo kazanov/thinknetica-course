@@ -107,7 +107,8 @@ describe 'Questions API' do
   end
 
   describe 'POST /create' do
-    let(:access_token) { create(:access_token) }
+    let(:user) { create(:user) }
+    let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
     context 'valid attributes' do
       it 'creates and saves question in db' do
@@ -116,6 +117,13 @@ describe 'Questions API' do
                                       access_token: access_token.token,
                                       question: attributes_for(:question)
         }.to change(Question, :count).by 1
+      end
+
+      it 'connects user and question' do
+        post api_v1_questions_path, format: :json,
+                                    access_token: access_token.token,
+                                    question: attributes_for(:question)
+        expect(assigns(:question).user_id).to match user.id
       end
 
       it 'returns 201 status' do
