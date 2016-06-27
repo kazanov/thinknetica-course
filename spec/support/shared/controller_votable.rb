@@ -2,7 +2,7 @@ shared_examples_for 'Controller votable' do
   describe 'POST #vote_up' do
     let(:user) { create(:user) }
     let(:user2) { create(:user) }
-    before { user.id = parent.user_id }
+    before { parent.update(user: user) }
 
     context 'authenticated not votable owner' do
       before do
