@@ -9,13 +9,6 @@ RSpec.describe Answer, type: :model do
   it { should belong_to :user }
   it { should have_db_index :user_id }
 
-  it { should have_many(:attachments).dependent(:destroy) }
-  it { should accept_nested_attributes_for :attachments }
-
-  it { should have_many(:votes).dependent(:destroy) }
-
-  it { should have_many(:comments).dependent(:destroy) }
-
   describe 'make_best!' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
@@ -35,5 +28,7 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  it_behaves_like 'votable'
+  it_behaves_like 'Votable'
+  it_behaves_like 'Attachable'
+  it_behaves_like 'Commentable'
 end

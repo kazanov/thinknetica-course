@@ -1,7 +1,9 @@
-shared_examples 'votable' do
+shared_examples_for 'Votable' do
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
   let(:votable) { create(described_class) }
+
+  it { should have_many(:votes).dependent(:destroy) }
 
   describe '#vote_up' do
     it 'should change votes count' do

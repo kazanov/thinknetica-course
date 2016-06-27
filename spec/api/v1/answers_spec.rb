@@ -2,17 +2,7 @@ require 'rails_helper'
 
 describe 'Answers API' do
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/answers', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get '/api/v1/answers', format: :json, access_token: '123456'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -35,6 +25,10 @@ describe 'Answers API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/answers', { format: :json }.merge(options)
+    end
   end
 
   describe 'GET /show' do
@@ -45,17 +39,7 @@ describe 'Answers API' do
     let!(:comments) { create_list(:comment, 3, commentable: answer, user: user) }
     let!(:attachments) { create_list(:attachment, 2, attachable: answer) }
 
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get api_v1_answer_path(answer), format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get api_v1_answer_path(answer), format: :json, access_token: '123456'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       before { get api_v1_answer_path(answer), format: :json, access_token: access_token.token }
@@ -87,6 +71,10 @@ describe 'Answers API' do
       it 'answer attachment have file url' do
         expect(response.body).to be_json_eql(attachments.last.file.url.to_json).at_path('attachments/0/file/url')
       end
+    end
+
+    def do_request(options = {})
+      get api_v1_answer_path(answer), { format: :json }.merge(options)
     end
   end
 
