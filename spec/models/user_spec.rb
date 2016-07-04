@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:answers) }
   it { should have_many(:votes) }
   it { should have_many(:comments) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   describe '#check auhtor_of?' do
     let(:user) { create(:user) }

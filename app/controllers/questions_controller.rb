@@ -5,6 +5,7 @@ class QuestionsController < ApplicationController
   before_action :check_author, only: [:update, :destroy]
   before_action :build_answer, only: :show
   after_action  :publish_question, only: :create
+  after_action  :subscribe_author, only: :create
 
   respond_to :js
   respond_to :json, only: :create
