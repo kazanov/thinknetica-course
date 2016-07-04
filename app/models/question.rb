@@ -3,6 +3,8 @@ class Question < ActiveRecord::Base
   include Votable
   include Commentable
 
+  scope :yesterday_created, -> { where(created_at: Time.now.yesterday.all_day) }
+
   belongs_to :user
   has_many :answers, dependent: :destroy
 

@@ -1,0 +1,6 @@
+- if @questions.any?
+  %ul
+  - @questions.each do |question|
+    %li= question.title, url_for(question)
+- else
+    %p No questions in last 24 hours.

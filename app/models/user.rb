@@ -36,4 +36,8 @@ class User < ActiveRecord::Base
   def create_authorization(auth)
     authorizations.create(provider: auth.provider, uid: auth.uid)
   end
+
+  def send_daily_digest
+    
+  end
 end

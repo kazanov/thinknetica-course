@@ -33,6 +33,9 @@ gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
 
+gem 'sidekiq'
+gem 'whenever'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'
