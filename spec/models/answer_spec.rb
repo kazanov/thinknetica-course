@@ -9,7 +9,7 @@ RSpec.describe Answer, type: :model do
   it { should belong_to :user }
   it { should have_db_index :user_id }
 
-  describe 'make_best!' do
+  describe '#make_best!' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let!(:answer1) { create(:answer, question: question, user: user, best: false) }
@@ -25,6 +25,16 @@ RSpec.describe Answer, type: :model do
 
       answer2.reload
       expect(answer2).to_not be_best
+    end
+  end
+
+  describe '#notify_subscribers' do
+    let(:question) { create :question }
+    let(:answer) { build :answer, question: question }
+
+    it 'should send email to question subscribers when answer is created' do
+      expect(NewAnswerJob).to receive(:perform_later).with(answer.question)
+      answer.save!
     end
   end
 

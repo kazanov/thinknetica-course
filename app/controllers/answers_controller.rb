@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   before_action :find_question, only: :create
   before_action :find_answer, only: [:update, :destroy, :best_answer]
   before_action :check_author, only: [:update, :destroy]
-  after_action  :notify_subscribers, only: :create
 
   respond_to :js
 
@@ -28,10 +27,6 @@ class AnswersController < ApplicationController
   end
 
   private
-
-  def notify_subscribers
-    NewAnswerJob.perform_later(@answer.question)
-  end
 
   def check_author
     redirect_to @answer.question unless current_user.author_of?(@answer)
