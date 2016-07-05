@@ -1,6 +1,7 @@
 - if @questions.any?
+  %p Questions, created yesterday.
   %ul
   - @questions.each do |question|
-    %li= question.title, url_for(question)
+    %li= link_to question.title, url_for(question)
 - else
-    %p No questions in last 24 hours.
+  No questions in last 24 hours.
