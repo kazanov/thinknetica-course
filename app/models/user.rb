@@ -8,11 +8,16 @@ class User < ActiveRecord::Base
   has_many :votes
   has_many :comments
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
 
   SKIP_CONFIRMATION = ['facebook'].freeze
 
   def author_of?(object)
     id == object.user_id
+  end
+
+  def subscribed_to?(question_id)
+    subscriptions.find_by(question_id: question_id)
   end
 
   def self.find_for_oauth(auth)

@@ -32,8 +32,8 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :create, [Question, Answer, Comment, Attachment]
-    can [:update, :destroy], [Question, Answer], user_id: @user.id
+    can :create, [Question, Answer, Comment, Attachment, Subscription]
+    can [:update, :destroy], [Question, Answer, Subscription], user_id: @user.id
     can :best_answer, Answer, question: { user_id: @user.id }
     vote_abilities
     can :me, User, id: user.id

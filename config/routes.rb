@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post 'best_answer'
       end
     end
+    resources :subscriptions, only: [:create, :destroy], shallow:  true
   end
 
   root 'questions#index'
