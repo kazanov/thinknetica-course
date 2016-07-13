@@ -2,6 +2,7 @@
   .container
     .navbar-header
       %a.navbar-brand{:href => "http://localhost:3000"} Thinknetica course
+      = render 'search/form'
     #navbar.navbar-collapse.collapse
       %ul.nav.navbar-nav.navbar-right
         - if user_signed_in?
@@ -16,6 +17,4 @@
           %li
             = link_to 'Sign up', new_user_registration_path
 .container
-  -# - flash.each do |name, msg|
-  -#   = content_tag :div, msg, class: "alert alert-info"
   = render partial: 'layouts/partials/flash_messages', flash: flash

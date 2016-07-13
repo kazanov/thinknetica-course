@@ -33,7 +33,7 @@ RSpec.describe SubscriptionsController, type: :controller do
         before { user2.subscriptions << subscription }
 
         it 'does not create new subscription' do
-          expect{ subscription_create }.to_not change(Subscription, :count)
+          expect { subscription_create }.to_not change(Subscription, :count)
         end
 
         it 'change user and question subscriptions count' do

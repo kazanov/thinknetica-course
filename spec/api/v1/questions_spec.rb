@@ -43,7 +43,7 @@ describe 'Questions API' do
       end
     end
 
-    def do_request(options = {})
+    def do_request(options={})
       get '/api/v1/questions', { format: :json }.merge(options)
     end
   end
@@ -89,7 +89,7 @@ describe 'Questions API' do
       end
     end
 
-    def do_request(options = {})
+    def do_request(options={})
       get api_v1_question_path(question), { format: :json }.merge(options)
     end
   end

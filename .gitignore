@@ -22,3 +22,6 @@
 
 public/system
 public/uploads
+
+/db/sphinx
+/config/*.sphinx.conf

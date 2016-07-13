@@ -1,0 +1,5 @@
+%h3 Comment
+- if object.commentable.class.name == 'Question'
+  %h4= link_to object.text, question_path(object.commentable)
+- else
+  %h4= link_to object.text, question_path(object.commentable.question_id)

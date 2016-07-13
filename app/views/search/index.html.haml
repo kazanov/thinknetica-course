@@ -1,0 +1,11 @@
+.row
+  .col-md-10.col-md-offset-1
+    .panel.panel-default
+      .panel-heading
+        %h2 Search results:
+      .panel-body
+        - if @result.any?
+          - @result.each do |object|
+            = render "search/#{object.class.name.underscore}", object: object
+        - else
+          %h3 Nothing found
