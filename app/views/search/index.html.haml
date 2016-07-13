@@ -6,6 +6,7 @@
       .panel-body
         - if @result.any?
           - @result.each do |object|
+            %h3 #{object.class.name}
             = render "search/#{object.class.name.underscore}", object: object
         - else
           %h3 Nothing found
