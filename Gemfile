@@ -36,6 +36,9 @@ gem 'oj_mimic_json'
 gem 'sidekiq'
 gem 'whenever'
 
+gem 'mysql2',          '~> 0.3.18', platform: :ruby
+gem 'thinking-sphinx', '~> 3.2.0'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'

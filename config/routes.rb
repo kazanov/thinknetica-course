@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     post 'confirm_email', to: 'omniauth_callbacks#confirm_email'
   end
 
+  get 'search', to: 'search#index'
+
   namespace :api do
     namespace :v1 do
       resources :profiles do

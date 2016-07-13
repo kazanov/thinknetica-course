@@ -3,15 +3,18 @@ class SubscriptionsController < ApplicationController
 
   respond_to :js
 
-  authorize_resource
+  # authorize_resource
 
   def create
+    authorize! :create, Subscription
     respond_with @subscription = Subscription.create(question: @question, user: current_user)
   end
 
   def destroy
     @subscription = Subscription.find(params[:id])
-    respond_with @subscription.destroy if @subscription.user_id == current_user.id
+    authorize! :destroy, @subscription
+    respond_with @subscription.destroy
+    # respond_with @subscription.destroy if @subscription.user_id == current_user.id
   end
 
   private
