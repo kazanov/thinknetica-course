@@ -39,6 +39,9 @@ gem 'whenever'
 gem 'mysql2',          '~> 0.3.18', platform: :ruby
 gem 'thinking-sphinx', '~> 3.2.0'
 
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'
@@ -57,6 +60,10 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'bullet'
   gem 'letter_opener'
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :test do
