@@ -1,7 +1,7 @@
 %nav.navbar.navbar-default.navbar-static-top
   .container
     .navbar-header
-      %a.navbar-brand{:href => "http://localhost:3000"} Thinknetica course
+      %a.navbar-brand{ href: request.host_with_port } Thinknetica course
       = render 'search/form'
     #navbar.navbar-collapse.collapse
       %ul.nav.navbar-nav.navbar-right
