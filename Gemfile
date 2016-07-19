@@ -44,6 +44,8 @@ gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 gem 'therubyracer'
 
+gem 'unicorn'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'
@@ -67,6 +69,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
