@@ -33,7 +33,8 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = Answer.find(params[:id]).includes(:user)
+    @answer = Answer.find(params[:id])
+    # @answer = Answer.find(params[:id]).includes(:user)
   end
 
   def find_question
