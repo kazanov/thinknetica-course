@@ -46,6 +46,8 @@ gem 'therubyracer'
 
 gem 'unicorn'
 
+gem 'redis-rails'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'byebug'

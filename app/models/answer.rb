@@ -4,7 +4,7 @@ class Answer < ActiveRecord::Base
   include Commentable
 
   belongs_to :user
-  belongs_to :question
+  belongs_to :question, touch: true
 
   validates :body, :question_id, :user_id, presence: true
 

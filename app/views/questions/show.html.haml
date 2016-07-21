@@ -1,28 +1,29 @@
-.row
-  .col-md-10.col-md-offset-1
-    %div{id: "question#{@question.id}", class: 'question'}
-      = render @question
+- cache @question do
+  .row
+    .col-md-10.col-md-offset-1
+      %div{id: "question#{@question.id}", class: 'question'}
+        = render @question
+        %hr
+        %p Comments:
+        %div{id: "question#{@question.id}-comments"}
+          = render @question.comments.order('created_at').includes(:user)
+        %div{id: "question#{@question.id}-comments-form", class: "comments-form"}
+          = render 'comments/form', commentable: @question
+        - if current_user
+          = link_to 'Add comment', '', class: 'add-comment-link', data: { commentable_id: @question.id, commentable_type: 'question' }
       %hr
-      %p Comments:
-      %div{id: "question#{@question.id}-comments"}
-        = render @question.comments.order('created_at').includes(:user)
-      %div{id: "question#{@question.id}-comments-form", class: "comments-form"}
-        = render 'comments/form', commentable: @question
-      - if current_user
-        = link_to 'Add comment', '', class: 'add-comment-link', data: { commentable_id: @question.id, commentable_type: 'question' }
-    %hr
-    %h3 Answers:
-    #answers{"data-question-id" => "#{@question.id}"}
-      = render @question.answers.best_first.includes(:attachments)
-    .row
-      .col-md-6
-        .panel.panel-primary
-          .panel-heading
-            %h2 Add Answer
-          .panel-body
-            = render 'answers/form'
-    %hr
-    = link_to 'Back to questions list', root_path
+      %h3 Answers:
+      #answers{"data-question-id" => "#{@question.id}"}
+        = render @question.answers.best_first.includes(:attachments)
+      .row
+        .col-md-6
+          .panel.panel-primary
+            .panel-heading
+              %h2 Add Answer
+            .panel-body
+              = render 'answers/form'
+      %hr
+      = link_to 'Back to questions list', root_path
 
 = subscribe_to "/questions/#{@question.id}/answers"
 = subscribe_to '/comments'

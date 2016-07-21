@@ -1,35 +1,36 @@
 - if answer.persisted?
-  %div{id: "answer#{answer.id}"}
-    .panel.panel-default
-      .panel-heading
-        Author: #{answer.user.email}
-        = render partial: 'votes/vote', locals: { votable: answer }
-        - if answer.best
-          %p SOLUTION:
-      .panel-body
-        %p #{answer.body}
-        - if answer.attachments.exists?
-          %ul
-            - answer.attachments.each do |a|
-              %li= link_to a.file.filename, a.file.url
-        %hr
-        %p Comments:
-        %div{id: "answer#{answer.id}-comments"}
-          = render answer.comments.order('created_at').includes(:user)
-        %div{id: "answer#{answer.id}-comments-form", class: "comments-form"}
-          = render 'comments/form', commentable: answer
+  - cache answer do
+    %div{id: "answer#{answer.id}"}
+      .panel.panel-default
+        .panel-heading
+          Author: #{answer.user.email}
+          = render partial: 'votes/vote', locals: { votable: answer }
+          - if answer.best
+            %p SOLUTION:
+        .panel-body
+          %p #{answer.body}
+          - if answer.attachments.exists?
+            %ul
+              - answer.attachments.each do |a|
+                %li= link_to a.file.filename, a.file.url
+          %hr
+          %p Comments:
+          %div{id: "answer#{answer.id}-comments"}
+            = render answer.comments.order('created_at').includes(:user)
+          %div{id: "answer#{answer.id}-comments-form", class: "comments-form"}
+            = render 'comments/form', commentable: answer
+          - if current_user
+            = link_to 'Add comment', '', class: 'add-comment-link', data: { commentable_id: answer.id, commentable_type: 'answer' }
         - if current_user
-          = link_to 'Add comment', '', class: 'add-comment-link', data: { commentable_id: answer.id, commentable_type: 'answer' }
-      - if current_user
-        .panel-footer
-          - if current_user.author_of?(answer.question)
-            = link_to 'Solution!', best_answer_answer_path(answer), method: :post
-          - if current_user.author_of?(answer)
-            = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-            = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-            = form_for answer, remote: true, html: { id: "edit-answer#{answer.id}", class: 'edit-answer' } do |f|
-              .answer-errors
-              = f.text_area :body, label: false, placeholder: 'Answer'
-              = f.simple_fields_for :attachments do |a|
-                = render 'attachments/form', f: f
-              = f.submit 'Save answer'
+          .panel-footer
+            - if current_user.author_of?(answer.question)
+              = link_to 'Solution!', best_answer_answer_path(answer), method: :post
+            - if current_user.author_of?(answer)
+              = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+              = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+              = form_for answer, remote: true, html: { id: "edit-answer#{answer.id}", class: 'edit-answer' } do |f|
+                .answer-errors
+                = f.text_area :body, label: false, placeholder: 'Answer'
+                = f.simple_fields_for :attachments do |a|
+                  = render 'attachments/form', f: f
+                = f.submit 'Save answer'
