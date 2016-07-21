@@ -34,7 +34,6 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
-    # @answer = Answer.find(params[:id]).includes(:user)
   end
 
   def find_question
