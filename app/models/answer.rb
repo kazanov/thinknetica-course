@@ -8,7 +8,7 @@ class Answer < ActiveRecord::Base
 
   validates :body, :question_id, :user_id, presence: true
 
-  scope :best_first, -> { order('best DESC', 'created_at') }
+  scope :best_first, -> { order('best DESC', 'created_at').includes(:user) }
 
   after_create :notify_subscribers
 

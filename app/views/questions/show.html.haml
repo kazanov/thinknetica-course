@@ -5,7 +5,7 @@
       %hr
       %p Comments:
       %div{id: "question#{@question.id}-comments"}
-        = render @question.comments.order('created_at')
+        = render @question.comments.order('created_at').includes(:user)
       %div{id: "question#{@question.id}-comments-form", class: "comments-form"}
         = render 'comments/form', commentable: @question
       - if current_user
@@ -13,7 +13,7 @@
     %hr
     %h3 Answers:
     #answers{"data-question-id" => "#{@question.id}"}
-      = render @question.answers.best_first
+      = render @question.answers.best_first.includes(:attachments)
     .row
       .col-md-6
         .panel.panel-primary

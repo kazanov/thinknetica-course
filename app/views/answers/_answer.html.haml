@@ -15,7 +15,7 @@
         %hr
         %p Comments:
         %div{id: "answer#{answer.id}-comments"}
-          = render answer.comments.order('created_at')
+          = render answer.comments.order('created_at').includes(:user)
         %div{id: "answer#{answer.id}-comments-form", class: "comments-form"}
           = render 'comments/form', commentable: answer
         - if current_user
